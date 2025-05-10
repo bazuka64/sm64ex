@@ -1028,7 +1028,7 @@ s32 cur_obj_check_anim_frame_in_range(s32 startFrame, s32 rangeLength) {
         return FALSE;
     }
 }
-
+// フレームリストのどれかに一致してたらtrue
 s32 cur_obj_check_frame_prior_current_frame(s16 *a0) {
     s16 sp6 = o->header.gfx.unk38.animFrame;
 
@@ -2131,7 +2131,7 @@ void cur_obj_spawn_particles(struct SpawnParticlesInfo *info) {
 }
 
 void obj_set_hitbox(struct Object *obj, struct ObjectHitbox *hitbox) {
-    if (!(obj->oFlags & OBJ_FLAG_30)) {
+    if (!(obj->oFlags & OBJ_FLAG_30)) { // init
         obj->oFlags |= OBJ_FLAG_30;
 
         obj->oInteractType = hitbox->interactType;
@@ -2191,15 +2191,25 @@ s32 cur_obj_wait_then_blink(s32 timeUntilBlinking, s32 numBlinks) {
     return done;
 }
 
-s32 cur_obj_is_mario_ground_pounding_platform(void) {
-    if (gMarioObject->platform == o) {
-        if (gMarioStates[0].action == ACT_GROUND_POUND_LAND) {
-            return TRUE;
-        }
-    }
+// s32 cur_obj_is_mario_ground_pounding_platform(void) {
+//     if (gMarioObject->platform == o) {
+//         if (gMarioStates[0].action == ACT_GROUND_POUND_LAND) {
+//             return TRUE;
+//         }
+//     }
 
-    return FALSE;
-}
+//     return FALSE;
+// }
+
+s32 cur_obj_is_mario_ground_pounding_platform(void) {
+        if (gMarioObject->platform == o) {
+            if (gMarioStates[0].action == ACT_GROUND_POUND_LAND || gMarioStates[0].action == ACT_GROUND_POUND) {
+                return TRUE;
+            }
+        }
+    
+        return FALSE;
+    }
 
 void spawn_mist_particles(void) {
     spawn_mist_particles_variable(0, 0, 46.0f);

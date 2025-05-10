@@ -76,19 +76,23 @@ u32 interact_cap(struct MarioState *, u32, struct Object *);
 u32 interact_grabbable(struct MarioState *, u32, struct Object *);
 u32 interact_text(struct MarioState *, u32, struct Object *);
 
+u32 interact_mmd(struct MarioState *m, UNUSED u32 interactType, struct Object *o);
+    
+
+
 struct InteractionHandler {
     u32 interactType;
     u32 (*handler)(struct MarioState *, u32, struct Object *);
 };
 
 static struct InteractionHandler sInteractionHandlers[] = {
-    { INTERACT_COIN,           interact_coin },
+    { INTERACT_COIN,           interact_coin },//
     { INTERACT_WATER_RING,     interact_water_ring },
-    { INTERACT_STAR_OR_KEY,    interact_star_or_key },
+    { INTERACT_STAR_OR_KEY,    interact_star_or_key },//
     { INTERACT_BBH_ENTRANCE,   interact_bbh_entrance },
-    { INTERACT_WARP,           interact_warp },
-    { INTERACT_WARP_DOOR,      interact_warp_door },
-    { INTERACT_DOOR,           interact_door },
+    { INTERACT_WARP,           interact_warp },//
+    { INTERACT_WARP_DOOR,      interact_warp_door },//
+    { INTERACT_DOOR,           interact_door },//
     { INTERACT_CANNON_BASE,    interact_cannon_base },
     { INTERACT_IGLOO_BARRIER,  interact_igloo_barrier },
     { INTERACT_TORNADO,        interact_tornado },
@@ -101,9 +105,9 @@ static struct InteractionHandler sInteractionHandlers[] = {
     { INTERACT_SHOCK,          interact_shock },
     { INTERACT_BOUNCE_TOP2,    interact_bounce_top },
     { INTERACT_MR_BLIZZARD,    interact_mr_blizzard },
-    { INTERACT_HIT_FROM_BELOW, interact_hit_from_below },
-    { INTERACT_BOUNCE_TOP,     interact_bounce_top },
-    { INTERACT_DAMAGE,         interact_damage },
+    { INTERACT_HIT_FROM_BELOW, interact_hit_from_below },//
+    { INTERACT_BOUNCE_TOP,     interact_bounce_top },//!
+    { INTERACT_DAMAGE,         interact_damage },//
     { INTERACT_POLE,           interact_pole },
     { INTERACT_HOOT,           interact_hoot },
     { INTERACT_BREAKABLE,      interact_breakable },
@@ -112,7 +116,8 @@ static struct InteractionHandler sInteractionHandlers[] = {
     { INTERACT_UNKNOWN_08,     interact_unknown_08 },
     { INTERACT_CAP,            interact_cap },
     { INTERACT_GRABBABLE,      interact_grabbable },
-    { INTERACT_TEXT,           interact_text },
+    { INTERACT_TEXT,           interact_text },//
+    { INTERACT_MMD,           interact_mmd },//
 };
 
 static u32 sForwardKnockbackActions[][3] = {
@@ -122,9 +127,9 @@ static u32 sForwardKnockbackActions[][3] = {
 };
 
 static u32 sBackwardKnockbackActions[][3] = {
-    { ACT_SOFT_BACKWARD_GROUND_KB, ACT_BACKWARD_GROUND_KB, ACT_HARD_BACKWARD_GROUND_KB },
-    { ACT_BACKWARD_AIR_KB,         ACT_BACKWARD_AIR_KB,    ACT_HARD_BACKWARD_AIR_KB },
-    { ACT_BACKWARD_WATER_KB,       ACT_BACKWARD_WATER_KB,  ACT_BACKWARD_WATER_KB },
+    { ACT_SOFT_BACKWARD_GROUND_KB, ACT_BACKWARD_GROUND_KB, ACT_HARD_BACKWARD_GROUND_KB },//ground
+    { ACT_BACKWARD_AIR_KB,         ACT_BACKWARD_AIR_KB,    ACT_HARD_BACKWARD_AIR_KB },//air
+    { ACT_BACKWARD_WATER_KB,       ACT_BACKWARD_WATER_KB,  ACT_BACKWARD_WATER_KB },//water
 };
 
 static u8 sDisplayingDoorText = FALSE;
@@ -177,7 +182,7 @@ s16 mario_obj_angle_to_object(struct MarioState *m, struct Object *o) {
 /**
  * Determines Mario's interaction with a given object depending on their proximity,
  * action, speed, and position.
- */
+ */// 攻撃じゃない時0を返す
 u32 determine_interaction(struct MarioState *m, struct Object *o) {
     u32 interaction = 0;
     u32 action = m->action;
@@ -198,7 +203,7 @@ u32 determine_interaction(struct MarioState *m, struct Object *o) {
                     interaction = INT_KICK;
                 }
             }
-            if (m->flags & MARIO_TRIPPING) {
+            if (m->flags & MARIO_TRIPPING) {//act_punch 真横でも攻撃判定
                 // 180 degrees total, or 90 each way
                 if (-0x4000 <= dYawToObject && dYawToObject <= 0x4000) {
                     interaction = INT_TRIP;
@@ -221,7 +226,7 @@ u32 determine_interaction(struct MarioState *m, struct Object *o) {
         } else if (action & ACT_FLAG_RIDING_SHELL) {
             interaction = INT_FAST_ATTACK_OR_SHELL;
         } else if (m->forwardVel <= -26.0f || 26.0f <= m->forwardVel) {
-            interaction = INT_FAST_ATTACK_OR_SHELL;
+            interaction = INT_FAST_ATTACK_OR_SHELL;//dive
         }
     }
 
@@ -513,15 +518,15 @@ u32 bully_knock_back_mario(struct MarioState *mario) {
 
 void bounce_off_object(struct MarioState *m, struct Object *o, f32 velY) {
     m->pos[1] = o->oPosY + o->hitboxHeight;
-    m->vel[1] = velY;
+    m->vel[1] = velY;//!
 
     m->flags &= ~MARIO_UNKNOWN_08;
 
-    play_sound(SOUND_ACTION_BOUNCE_OFF_OBJECT, m->marioObj->header.gfx.cameraToObject);
+    play_sound(SOUND_ACTION_BOUNCE_OFF_OBJECT, m->marioObj->header.gfx.cameraToObject);//
 }
 
 void hit_object_from_below(struct MarioState *m, UNUSED struct Object *o) {
-    m->vel[1] = 0.0f;
+    m->vel[1] = 0.0f;//
     set_camera_shake_from_hit(SHAKE_HIT_FROM_BELOW);
 }
 
@@ -558,10 +563,10 @@ static u32 unused_determine_knockback_action(struct MarioState *m) {
 u32 determine_knockback_action(struct MarioState *m, UNUSED s32 arg) {
     u32 bonkAction;
 
-    s16 terrainIndex = 0; // 1 = air, 2 = water, 0 = default
+    s16 terrainIndex = 0; // 1 = air, 2 = water, 0 = default act_flagを見て決める
     s16 strengthIndex = 0;
 
-    s16 angleToObject = mario_obj_angle_to_object(m, m->interactObj);
+    s16 angleToObject = mario_obj_angle_to_object(m, m->interactObj);//
     s16 facingDYaw = angleToObject - m->faceAngle[1];
     s16 remainingHealth = m->health - 0x40 * m->hurtCounter;
 
@@ -581,7 +586,7 @@ u32 determine_knockback_action(struct MarioState *m, UNUSED s32 arg) {
 
     m->faceAngle[1] = angleToObject;
 
-    if (terrainIndex == 2) {
+    if (terrainIndex == 2) {//water
         if (m->forwardVel < 28.0f) {
             mario_set_forward_vel(m, 28.0f);
         }
@@ -595,7 +600,7 @@ u32 determine_knockback_action(struct MarioState *m, UNUSED s32 arg) {
                 m->vel[1] = 0.0f;
             }
         }
-    } else {
+    } else {//ground air
         if (m->forwardVel < 16.0f) {
             mario_set_forward_vel(m, 16.0f);
         }
@@ -653,9 +658,9 @@ void bounce_back_from_attack(struct MarioState *m, u32 interaction) {
         }
 
         if (m->action & ACT_FLAG_AIR) {
-            mario_set_forward_vel(m, -16.0f);
+            mario_set_forward_vel(m, -16.0f);//kick
         } else {
-            mario_set_forward_vel(m, -48.0f);
+            mario_set_forward_vel(m, -48.0f);//punch trip
         }
 
         set_camera_shake_from_hit(SHAKE_ATTACK);
@@ -696,7 +701,7 @@ u32 take_damage_from_interact_object(struct MarioState *m) {
         damage = 0;
     }
 
-    m->hurtCounter += 4 * damage;
+    m->hurtCounter += 4 * damage;//!
 
     queue_rumble_data(5, 80);
     set_camera_shake_from_hit(shake);
@@ -711,7 +716,7 @@ u32 take_damage_and_knock_back(struct MarioState *m, struct Object *o) {
         o->oInteractStatus = INT_STATUS_INTERACTED | INT_STATUS_ATTACKED_MARIO;
         m->interactObj = o;
 
-        damage = take_damage_from_interact_object(m);
+        damage = take_damage_from_interact_object(m);//
 
         if (o->oInteractionSubtype & INT_SUBTYPE_BIG_KNOCKBACK) {
             m->forwardVel = 40.0f;
@@ -723,7 +728,7 @@ u32 take_damage_and_knock_back(struct MarioState *m, struct Object *o) {
 
         update_mario_sound_and_camera(m);
         return drop_and_set_mario_action(m, determine_knockback_action(m, o->oDamageOrCoinValue),
-                                         damage);
+                                         damage);//
     }
 
     return FALSE;
@@ -737,14 +742,14 @@ void reset_mario_pitch(struct MarioState *m) {
 }
 
 u32 interact_coin(struct MarioState *m, UNUSED u32 interactType, struct Object *o) {
-    m->numCoins += o->oDamageOrCoinValue;
-    m->healCounter += 4 * o->oDamageOrCoinValue;
+    m->numCoins += o->oDamageOrCoinValue;//
+    m->healCounter += 4 * o->oDamageOrCoinValue;//
 
-    o->oInteractStatus = INT_STATUS_INTERACTED;
+    o->oInteractStatus = INT_STATUS_INTERACTED;//
 
     if (COURSE_IS_MAIN_COURSE(gCurrCourseNum) && m->numCoins - o->oDamageOrCoinValue < 100
         && m->numCoins >= 100) {
-        bhv_spawn_star_no_level_exit(6);
+        bhv_spawn_star_no_level_exit(6);//
     }
    
     if (o->oDamageOrCoinValue >= 2) {
@@ -821,7 +826,7 @@ u32 interact_star_or_key(struct MarioState *m, UNUSED u32 interactType, struct O
             return set_mario_action(m, ACT_JUMBO_STAR_CUTSCENE, 0);
         }
 
-        return set_mario_action(m, starGrabAction, noExit + 2 * grandStar);
+        return set_mario_action(m, starGrabAction, noExit + 2 * grandStar);//
     }
 
     return FALSE;
@@ -854,7 +859,7 @@ u32 interact_warp(struct MarioState *m, UNUSED u32 interactType, struct Object *
         if (action == ACT_TELEPORT_FADE_IN) {
             sJustTeleported = TRUE;
 
-        } else if (!sJustTeleported) {
+        } else if (!sJustTeleported) {// マリオがシリンダーと重なってるうちはtrueのまま
             if (action == ACT_IDLE || action == ACT_PANTING || action == ACT_STANDING_AGAINST_WALL
                 || action == ACT_CROUCHING) {
                 m->interactObj = o;
@@ -874,7 +879,7 @@ u32 interact_warp(struct MarioState *m, UNUSED u32 interactType, struct Object *
                 play_sound(SOUND_MENU_ENTER_PIPE, m->marioObj->header.gfx.cameraToObject);
                 queue_rumble_data(15, 80);
             } else {
-                play_sound(SOUND_MENU_ENTER_HOLE, m->marioObj->header.gfx.cameraToObject);
+                play_sound(SOUND_MENU_ENTER_HOLE, m->marioObj->header.gfx.cameraToObject);//スポッ
                 queue_rumble_data(12, 80);
             }
 
@@ -893,7 +898,7 @@ u32 interact_warp_door(struct MarioState *m, UNUSED u32 interactType, struct Obj
     u32 actionArg;
 
     if (m->action == ACT_WALKING || m->action == ACT_DECELERATING) {
-        if (warpDoorId == 1 && !(saveFlags & SAVE_FLAG_UNLOCKED_UPSTAIRS_DOOR)) {
+        if (warpDoorId == 1 && !(saveFlags & SAVE_FLAG_UNLOCKED_UPSTAIRS_DOOR)) {//はじかれる時
             if (!(saveFlags & SAVE_FLAG_HAVE_KEY_2)) {
                 if (!sDisplayingDoorText) {
                     set_mario_action(m, ACT_READING_AUTOMATIC_DIALOG,
@@ -921,7 +926,7 @@ u32 interact_warp_door(struct MarioState *m, UNUSED u32 interactType, struct Obj
 
             doorAction = ACT_UNLOCKING_KEY_DOOR;
         }
-
+        //　入れる
         if (m->action == ACT_WALKING || m->action == ACT_DECELERATING) {
             actionArg = should_push_or_pull_door(m, o) + 0x00000004;
 
@@ -1040,7 +1045,7 @@ u32 interact_door(struct MarioState *m, UNUSED u32 interactType, struct Object *
             sDisplayingDoorText = TRUE;
             return set_mario_action(m, ACT_READING_AUTOMATIC_DIALOG, text);
         }
-    } else if (m->action == ACT_IDLE && sDisplayingDoorText == TRUE && requiredNumStars == 70) {
+    } else if (m->action == ACT_IDLE && sDisplayingDoorText == TRUE && requiredNumStars == 70) {//無限階段 扉
         m->interactObj = o;
         m->usedObj = o;
         return set_mario_action(m, ACT_ENTERING_STAR_DOOR, should_push_or_pull_door(m, o));
@@ -1313,7 +1318,7 @@ u32 interact_hit_from_below(struct MarioState *m, UNUSED u32 interactType, struc
         bounce_back_from_attack(m, interaction);
 
         if (interaction & INT_HIT_FROM_BELOW) {
-            hit_object_from_below(m, o);
+            hit_object_from_below(m, o);//
         }
 
         if (interaction & INT_HIT_FROM_ABOVE) {
@@ -1343,13 +1348,13 @@ u32 interact_bounce_top(struct MarioState *m, UNUSED u32 interactType, struct Ob
     if (m->flags & MARIO_METAL_CAP) {
         interaction = INT_FAST_ATTACK_OR_SHELL;
     } else {
-        interaction = determine_interaction(m, o);
+        interaction = determine_interaction(m, o);// int_attack_flagのセット 8個
     }
 
     if (interaction & INT_ATTACK_NOT_FROM_BELOW) {
         queue_rumble_data(5, 80);
-        attack_object(o, interaction);
-        bounce_back_from_attack(m, interaction);
+        attack_object(o, interaction);//objがアタックされた　attack_flagアタックのされ方　6個
+        bounce_back_from_attack(m, interaction);//panch kick sliding dive
 
         if (interaction & INT_HIT_FROM_ABOVE) {
             if (o->oInteractionSubtype & INT_SUBTYPE_TWIRL_BOUNCE) {
@@ -1360,19 +1365,49 @@ u32 interact_bounce_top(struct MarioState *m, UNUSED u32 interactType, struct Ob
 #endif
                 return drop_and_set_mario_action(m, ACT_TWIRLING, 0);
             } else {
-                bounce_off_object(m, o, 30.0f);
+                bounce_off_object(m, o, 30.0f);//!
             }
         }
-    } else if (take_damage_and_knock_back(m, o)) {
+    } else if (take_damage_and_knock_back(m, o)) {//objがアタックした
         return TRUE;
     }
 
     if (!(o->oInteractionSubtype & INT_SUBTYPE_DELAY_INVINCIBILITY)) {
         sDelayInvincTimer = TRUE;
     }
-    return FALSE;
+    return FALSE; // return trueでinteractionHandlersのforループを抜ける
 }
 
+void bounce_off_object2(struct MarioState *m, struct Object *o, f32 velY) {
+    //m->pos[1] = o->oPosY + o->hitboxHeight;
+    m->vel[1] = velY;//!
+
+    m->flags &= ~MARIO_UNKNOWN_08;
+
+    play_sound(SOUND_ACTION_BOUNCE_OFF_OBJECT, m->marioObj->header.gfx.cameraToObject);//
+}
+
+u32 interact_mmd(struct MarioState *m, UNUSED u32 interactType, struct Object *o){
+    u32 interaction;
+    if (m->flags & MARIO_METAL_CAP) {
+        interaction = INT_FAST_ATTACK_OR_SHELL;
+    } else {
+        interaction = determine_interaction(m, o);
+    }
+    
+    if (interaction & INT_ATTACK_NOT_FROM_BELOW) {
+        bounce_back_from_attack(m, interaction);
+
+        if (interaction & INT_HIT_FROM_ABOVE) {
+            bounce_off_object2(m, o, 30.0f);
+        }
+    } else if(m->action & ACT_FLAG_AIR) {
+        set_mario_action(m, ACT_AIR_HIT_WALL, 0);
+    }
+    
+    return FALSE;
+}
+    
 u32 interact_unknown_08(struct MarioState *m, UNUSED u32 interactType, struct Object *o) {
     u32 interaction = determine_interaction(m, o);
 
@@ -1475,7 +1510,7 @@ u32 check_object_grab_mario(struct MarioState *m, UNUSED u32 interactType, struc
 
 u32 interact_pole(struct MarioState *m, UNUSED u32 interactType, struct Object *o) {
     s32 actionId = m->action & ACT_ID_MASK;
-    if (actionId >= 0x080 && actionId < 0x0A0) {
+    if (actionId >= 0x080 && actionId < 0x0A0) {//airboneの前半なら
         if (!(m->prevAction & ACT_FLAG_ON_POLE) || m->usedObj != o) {
 #ifdef VERSION_SH
             f32 velConv = m->forwardVel; // conserve the velocity.
@@ -1526,7 +1561,7 @@ u32 interact_hoot(struct MarioState *m, UNUSED u32 interactType, struct Object *
 
     //! Can pause to advance the global timer without falling too far, allowing
     // you to regrab after letting go.
-    if (actionId >= 0x080 && actionId < 0x098
+    if (actionId >= 0x080 && actionId < 0x098//airboneの最初の方なら
         && (gGlobalTimer - m->usedObj->oHootMarioReleaseTime > 30)) {
         mario_stop_riding_and_holding(m);
         o->oInteractStatus = INT_STATUS_HOOT_GRABBED_BY_MARIO;
@@ -1681,7 +1716,7 @@ u32 check_read_sign(struct MarioState *m, struct Object *o) {
 }
 
 u32 check_npc_talk(struct MarioState *m, struct Object *o) {
-    if ((m->input & READ_MASK) && mario_can_talk(m, 1)) {
+    if ((m->input & READ_MASK) && mario_can_talk(m, 1)) {//mario actionをみる
         s16 facingDYaw = mario_obj_angle_to_object(m, o) - m->faceAngle[1];
         if (facingDYaw >= -0x4000 && facingDYaw <= 0x4000) {
             o->oInteractStatus = INT_STATUS_INTERACTED;
@@ -1702,11 +1737,11 @@ u32 interact_text(struct MarioState *m, UNUSED u32 interactType, struct Object *
     u32 interact = FALSE;
 
     if (o->oInteractionSubtype & INT_SUBTYPE_SIGN) {
-        interact = check_read_sign(m, o);
+        interact = check_read_sign(m, o);//押し出し　なし surface obj
     } else if (o->oInteractionSubtype & INT_SUBTYPE_NPC) {
-        interact = check_npc_talk(m, o);
+        interact = check_npc_talk(m, o);//押し出し　-10
     } else {
-        push_mario_out_of_object(m, o, 2.0f);
+        push_mario_out_of_object(m, o, 2.0f);//押し出し　トード透明？
     }
 
     return interact;
@@ -1725,11 +1760,11 @@ void check_kick_or_punch_wall(struct MarioState *m) {
                     m->action = ACT_MOVE_PUNCHING;
                 }
 
-                mario_set_forward_vel(m, -48.0f);
+                mario_set_forward_vel(m, -48.0f);//
                 play_sound(SOUND_ACTION_HIT_2, m->marioObj->header.gfx.cameraToObject);
                 m->particleFlags |= PARTICLE_TRIANGLE;
             } else if (m->action & ACT_FLAG_AIR) {
-                mario_set_forward_vel(m, -16.0f);
+                mario_set_forward_vel(m, -16.0f);//
                 play_sound(SOUND_ACTION_HIT_2, m->marioObj->header.gfx.cameraToObject);
                 m->particleFlags |= PARTICLE_TRIANGLE;
             }
@@ -1743,7 +1778,8 @@ void mario_process_interactions(struct MarioState *m) {
 
     if (!(m->action & ACT_FLAG_INTANGIBLE) && m->collidedObjInteractTypes != 0) {
         s32 i;
-        for (i = 0; i < 31; i++) {
+        //for (i = 0; i < 31; i++) {
+        for (i = 0; i < 32; i++) {
             u32 interactType = sInteractionHandlers[i].interactType;
             if (m->collidedObjInteractTypes & interactType) {
                 struct Object *object = mario_get_collided_object(m, interactType);
@@ -1765,7 +1801,7 @@ void mario_process_interactions(struct MarioState *m) {
 
     //! If the kick/punch flags are set and an object collision changes Mario's
     // action, he will get the kick/punch wall speed anyway.
-    check_kick_or_punch_wall(m);
+    check_kick_or_punch_wall(m);//
     m->flags &= ~MARIO_PUNCHING & ~MARIO_KICKING & ~MARIO_TRIPPING;
 
     if (!(m->marioObj->collidedObjInteractTypes & (INTERACT_WARP_DOOR | INTERACT_DOOR))) {

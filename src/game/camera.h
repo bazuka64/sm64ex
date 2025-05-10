@@ -246,6 +246,7 @@
 #define CUTSCENE_EXIT_WATERFALL       179
 #define CUTSCENE_EXIT_FALL_WMOTR      180
 #define CUTSCENE_ENTER_POOL           181
+#define CUTSCENE_SHAKUSI              182
 
 /**
  * Stop the cutscene.

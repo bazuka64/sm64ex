@@ -15,8 +15,8 @@
 #include "../platform.h"
 #include "fs.h"
 
-char fs_gamedir[SYS_MAX_PATH] = "";
-char fs_writepath[SYS_MAX_PATH] = "";
+char fs_gamedir[SYS_MAX_PATH] = ""; // res
+char fs_writepath[SYS_MAX_PATH] = ""; // ~/AppData/Roaming/sm64ex
 
 struct fs_dir_s {
     void *pack;

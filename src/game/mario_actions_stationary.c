@@ -50,7 +50,8 @@ s32 check_common_idle_cancels(struct MarioState *m) {
     }
 
     if (m->input & INPUT_B_PRESSED) {
-        return set_mario_action(m, ACT_PUNCHING, 0);
+        // return set_mario_action(m, ACT_PUNCHING, 0);
+        return set_mario_action(m, ACT_SHAKUSI, 0);
     }
 
     if (m->input & INPUT_Z_DOWN) {
@@ -834,6 +835,9 @@ s32 landing_step(struct MarioState *m, s32 arg1, u32 action) {
     stationary_ground_step(m);
     set_mario_animation(m, arg1);
     if (is_anim_at_end(m)) {
+        
+        
+        
         return set_mario_action(m, action, 0);
     }
     return 0;
@@ -1040,7 +1044,33 @@ s32 act_twirl_land(struct MarioState *m) {
     return 0;
 }
 
+extern BehaviorScript bhvDeformableBox[];
+extern Vtx deformable_box_vertex[];
+
 s32 act_ground_pound_land(struct MarioState *m) {
+    
+    if(m->actionState == 0){
+        if(m->floor->object && m->floor->object->behavior == bhvDeformableBox){
+            //m->floor->object->collisionData;
+            // 床のコリジョンを下げる
+            // m->floor->originOffset -= 50; // これが判定に使われる
+            // m->floor->vertex1[1] -= 50;
+            // m->floor->vertex2[1] -= 50;
+            // m->floor->vertex3[1] -= 50;
+            
+            struct Object* o = m->floor->object;
+            
+            s16* start_offset = o->collisionData + 4;
+            for (int i = 0; i < 3; i++)
+            {
+                s16 vertex_index = m->floor->vertex_indices[i];
+                start_offset[vertex_index * 3 + 1] -= 50;
+                
+                deformable_box_vertex[vertex_index].v.ob[1] -= 50;
+            }
+        }
+    }
+    
     m->actionState = 1;
     if (m->input & INPUT_UNKNOWN_10) {
         return drop_and_set_mario_action(m, ACT_SHOCKWAVE_BOUNCE, 0);
@@ -1055,6 +1085,7 @@ s32 act_ground_pound_land(struct MarioState *m) {
     }
 
     landing_step(m, MARIO_ANIM_GROUND_POUND_LANDING, ACT_BUTT_SLIDE_STOP);
+    
     return 0;
 }
 
@@ -1139,9 +1170,9 @@ s32 mario_execute_stationary_action(struct MarioState *m) {
         case ACT_HOLD_IDLE:               sp24 = act_hold_idle(m);                        break;
         case ACT_HOLD_HEAVY_IDLE:         sp24 = act_hold_heavy_idle(m);                  break;
         case ACT_IN_QUICKSAND:            sp24 = act_in_quicksand(m);                     break;
-        case ACT_STANDING_AGAINST_WALL:   sp24 = act_standing_against_wall(m);            break;
+        case ACT_STANDING_AGAINST_WALL:   sp24 = act_standing_against_wall(m);            break;//こすり
         case ACT_COUGHING:                sp24 = act_coughing(m);                         break;
-        case ACT_SHIVERING:               sp24 = act_shivering(m);                        break;
+        case ACT_SHIVERING:               sp24 = act_shivering(m);                        break;//寒さに震える
         case ACT_CROUCHING:               sp24 = act_crouching(m);                        break;
         case ACT_START_CROUCHING:         sp24 = act_start_crouching(m);                  break;
         case ACT_STOP_CROUCHING:          sp24 = act_stop_crouching(m);                   break;

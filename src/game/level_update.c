@@ -973,22 +973,22 @@ s32 play_mode_normal(void) {
         }
     }
 
-    warp_area();
-    check_instant_warp();
+    warp_area();//
+    check_instant_warp();//
 
     if (sTimerRunning && gHudDisplay.timer < 17999) {
         gHudDisplay.timer += 1;
     }
 
-    area_update_objects();
-    update_hud_values();
+    area_update_objects();//!
+    update_hud_values();//
 
     if (gCurrentArea != NULL) {
-        update_camera(gCurrentArea->camera);
+        update_camera(gCurrentArea->camera);//
     }
 
-    initiate_painting_warp();
-    initiate_delayed_warp();
+    initiate_painting_warp();//
+    initiate_delayed_warp();//
 
     // If either initiate_painting_warp or initiate_delayed_warp initiated a
     // warp, change play mode accordingly.
@@ -1136,7 +1136,7 @@ s32 update_level(void) {
 
     switch (sCurrPlayMode) {
         case PLAY_MODE_NORMAL:
-            changeLevel = play_mode_normal();
+            changeLevel = play_mode_normal();//!
             break;
         case PLAY_MODE_PAUSED:
             changeLevel = play_mode_paused();
@@ -1181,7 +1181,7 @@ s32 init_level(void) {
         if (sWarpDest.nodeId >= WARP_NODE_CREDITS_MIN) {
             warp_credits();
         } else {
-            warp_level();
+            warp_level(); // どこで呼ばれる？
         }
     } else {
         if (gPlayerSpawnInfos[0].areaIndex >= 0) {
@@ -1236,10 +1236,10 @@ s32 lvl_init_or_update(s16 initOrUpdate, UNUSED s32 unused) {
 
     switch (initOrUpdate) {
         case 0:
-            result = init_level();
+            result = init_level();//
             break;
         case 1:
-            result = update_level();
+            result = update_level();//!
             break;
     }
 

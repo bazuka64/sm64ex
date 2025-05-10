@@ -1785,20 +1785,24 @@ void gfx_run(Gfx *commands) {
     
     //puts("New frame");
     
-    if (!gfx_wapi->start_frame()) {
+    if (!gfx_wapi->start_frame()) { // nop
         dropped_frame = true;
         return;
     }
     dropped_frame = false;
     
     double t0 = gfx_wapi->get_time();
-    gfx_rapi->start_frame();
+    gfx_rapi->start_frame(); // clear
     gfx_run_dl(commands);
     gfx_flush();
     double t1 = gfx_wapi->get_time();
     //printf("Process %f %f\n", t1, t1 - t0);
-    gfx_rapi->end_frame();
-    gfx_wapi->swap_buffers_begin();
+    gfx_rapi->end_frame(); // nop
+    
+    extern void hook_from_gfx_run();
+    hook_from_gfx_run();
+    
+    gfx_wapi->swap_buffers_begin(); // swap buffers
 }
 
 void gfx_end_frame(void) {

@@ -2,7 +2,7 @@ IndentWidth: 4
 Language: Cpp
 AlignAfterOpenBracket: Align
 SortIncludes: false
-ColumnLimit: 104
+ColumnLimit: 204
 PointerAlignment: Right
 AllowShortFunctionsOnASingleLine: false
 AllowShortIfStatementsOnASingleLine: false
@@ -16,3 +16,4 @@ Cpp11BracedListStyle: false
 IndentCaseLabels: true
 AlignTrailingComments: true
 UseTab: Never
+BreakTemplateDeclarations: true

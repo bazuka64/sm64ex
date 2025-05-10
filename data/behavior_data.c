@@ -3517,7 +3517,7 @@ const BehaviorScript bhvMario[] = {
     SET_HITBOX(/*Radius*/ 37, /*Height*/ 160),
     BEGIN_LOOP(),
         CALL_NATIVE(try_print_debug_mario_level_info),
-        CALL_NATIVE(bhv_mario_update),
+        CALL_NATIVE(bhv_mario_update),//!
         CALL_NATIVE(try_do_mario_debug_object_spawn),
     END_LOOP(),
 };
@@ -6110,5 +6110,49 @@ const BehaviorScript bhvIntroScene[] = {
     OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
     BEGIN_LOOP(),
         CALL_NATIVE(bhv_intro_scene_loop),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvMMD[] = {
+    BEGIN(OBJ_LIST_GENACTOR),
+    CALL_NATIVE(bhv_mmd_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_mmd_update),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvCoinSpawner[] = {
+    BEGIN(OBJ_LIST_SPAWNER),
+    CALL_NATIVE(bhv_coin_spawner_init),
+    DEACTIVATE(),
+};
+
+const BehaviorScript bhvEnemySpawner[] = {
+    BEGIN(OBJ_LIST_SPAWNER),
+    CALL_NATIVE(bhv_enemy_spawner_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_enemy_spawner_update),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvBreakableBoxSpawner[] = {
+    BEGIN(OBJ_LIST_SPAWNER),
+    CALL_NATIVE(bhv_breakable_box_spawner_init),
+    DEACTIVATE(),
+};
+
+void bhv_deformable_box_init();
+void bhv_deformable_box_update();
+extern const Collision deformable_box_collision[];
+
+const BehaviorScript bhvDeformableBox[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    CALL_NATIVE(bhv_deformable_box_init),
+    LOAD_COLLISION_DATA(deformable_box_collision),
+    //CALL_NATIVE(load_object_collision_model_2_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_deformable_box_update),
+      //  CALL_NATIVE(load_object_collision_model_2_update),
+        CALL_NATIVE(load_object_collision_model),
     END_LOOP(),
 };

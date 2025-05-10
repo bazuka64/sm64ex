@@ -551,6 +551,12 @@ void bhv_intro_scene_loop(void);
 void bhv_dust_smoke_loop(void);
 void bhv_yoshi_loop(void);
 void bhv_volcano_trap_loop(void);
+void bhv_mmd_init(void);
+void bhv_mmd_update(void);
+void bhv_coin_spawner_init(void);
+void bhv_enemy_spawner_update(void);
+void bhv_enemy_spawner_init(void);
+void bhv_breakable_box_spawner_init();
 
 Gfx *geo_move_mario_part_from_parent(s32 run, UNUSED struct GraphNode *node, Mat4 mtx);
 

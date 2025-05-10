@@ -3,8 +3,9 @@
 # --------------------------------------
 
 # obtain a list of segments from the *.c files in bin directory
+# notdir:ディレクトリを除去
 SEGMENTS := $(notdir $(basename $(wildcard bin/*.c))) $(addprefix $(VERSION)/,$(notdir $(basename $(wildcard bin/$(VERSION)/*.c)))) $(addsuffix _skybox,$(notdir $(basename $(wildcard textures/skyboxes/*.png))))
-ACTORS := $(filter %/,$(wildcard actors/*/))
+ACTORS := $(filter %/,$(wildcard actors/*/)) # filter %/:ディレクトリのみ
 TEXTURE_DIRS := $(addprefix textures/,$(SEGMENTS)) $(ACTORS) textures/crash_screen textures/intro_raw textures/ipl3_raw textures/skybox_tiles
 
 # NOTE: textures assume naming convention "texture.<encoding>.png" generates "texture.<encoding>"

@@ -38,7 +38,7 @@ static void handle_merry_go_round_music(void) {
         // without being on a floor with surface type 0x1A (SURFACE_MGR_MUSIC).
         if (cur_obj_is_mario_on_platform() || marioFloorType == SURFACE_MGR_MUSIC) {
             // If Mario is in the merry-go-round's enclosure, play only the merry-go-round music.
-            play_secondary_music(SEQ_EVENT_MERRY_GO_ROUND, 0, 78, 50);
+            play_secondary_music(SEQ_EVENT_MERRY_GO_ROUND, 0/*no bgm*/, 78, 50);
             gMarioOnMerryGoRound = TRUE;
         } else {
             // If Mario is not in the merry-go-round's enclosure,

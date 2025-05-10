@@ -92,6 +92,13 @@ static const LevelScript script_func_local_4[] = {
     RETURN(),
 };
 
+extern Gfx napalm_tripo_node_b7e3e46b_6c7c_4a26_a182_ac2b9f9ac7b2_mesh[];
+
+extern Gfx deformable_box_dl[];
+
+extern const BehaviorScript bhvBreakableBoxSpawner[];
+extern const BehaviorScript bhvDeformableBox[];
+
 const LevelScript level_castle_grounds_entry[] = {
     INIT_LEVEL(),
     LOAD_MIO0(        /*seg*/ 0x07, _castle_grounds_segment_7SegmentRomStart, _castle_grounds_segment_7SegmentRomEnd),
@@ -104,7 +111,7 @@ const LevelScript level_castle_grounds_entry[] = {
     LOAD_MIO0(        /*seg*/ 0x08, _common0_mio0SegmentRomStart, _common0_mio0SegmentRomEnd),
     LOAD_RAW(         /*seg*/ 0x0F, _common0_geoSegmentRomStart,  _common0_geoSegmentRomEnd),
     ALLOC_LEVEL_POOL(),
-    MARIO(/*model*/ MODEL_MARIO, /*behParam*/ 0x00000001, /*beh*/ bhvMario),
+    MARIO(/*model*/ MODEL_MARIO, /*behParam*/ 0x00000001, /*beh*/ bhvMario),//!
     JUMP_LINK(script_func_global_1),
     JUMP_LINK(script_func_global_11),
     JUMP_LINK(script_func_global_16),
@@ -116,6 +123,9 @@ const LevelScript level_castle_grounds_entry[] = {
     LOAD_MODEL_FROM_GEO(MODEL_CASTLE_GROUNDS_VCUTM_GRILL,  castle_grounds_geo_00070C),
     LOAD_MODEL_FROM_GEO(MODEL_CASTLE_GROUNDS_FLAG,         castle_grounds_geo_000660),
     LOAD_MODEL_FROM_GEO(MODEL_CASTLE_GROUNDS_CANNON_GRILL, castle_grounds_geo_000724),
+    //LOAD_MODEL_FROM_DL(MODEL_BLACK_BOBOMB, napalm_tripo_node_b7e3e46b_6c7c_4a26_a182_ac2b9f9ac7b2_mesh, LAYER_OPAQUE),
+    
+    LOAD_MODEL_FROM_DL(MODEL_DEFORMABLE_BOX, deformable_box_dl, LAYER_OPAQUE),
 
     AREA(/*index*/ 1, castle_grounds_geo_00073C),
         WARP_NODE(/*id*/ 0xF1, /*destLevel*/ LEVEL_CASTLE_GROUNDS, /*destArea*/ 0x01, /*destNode*/ 0x03, /*flags*/ WARP_NO_CHECKPOINT),
@@ -125,14 +135,35 @@ const LevelScript level_castle_grounds_entry[] = {
         JUMP_LINK(script_func_local_4),
         TERRAIN(/*terrainData*/ castle_grounds_seg7_collision_level),
         MACRO_OBJECTS(/*objList*/ castle_grounds_seg7_macro_objs),
-        SET_BACKGROUND_MUSIC(/*settingsPreset*/ 0x0000, /*seq*/ SEQ_SOUND_PLAYER),
+        //SET_BACKGROUND_MUSIC(/*settingsPreset*/ 0x0000, /*seq*/ SEQ_SOUND_PLAYER),
+        SET_BACKGROUND_MUSIC(/*settingsPreset*/ 0x0000, /*seq*/ SEQ_LEVEL_FAIRY_TAIL),
         TERRAIN_TYPE(/*terrainType*/ TERRAIN_GRASS),
+        
+        OBJECT(/*model*/ MODEL_NONE, /*pos*/ -1328 + 200, 260, 4664 - 1000, /*angle*/ 0, 0, 0, /*behParam*/ 0x00000000, /*beh*/ bhvMMD),
+        OBJECT(/*model*/ MODEL_NONE, /*pos*/ -1328 - 200, 260, 4664 - 1000, /*angle*/ 0, 0, 0, /*behParam*/ 0x00010000, /*beh*/ bhvMMD),
+        OBJECT(/*model*/ MODEL_NONE, /*pos*/ -1328 + 600, 260, 4664 - 1000, /*angle*/ 0, 0, 0, /*behParam*/ 0x00020000, /*beh*/ bhvMMD),
+        OBJECT(/*model*/ MODEL_NONE, /*pos*/ -1328 - 600, 260, 4664 - 1000, /*angle*/ 0, 0, 0, /*behParam*/ 0x00030000, /*beh*/ bhvMMD),
+        
+        OBJECT(/*model*/ MODEL_NONE, /*pos*/ 0,0,0, /*angle*/ 0, 0, 0, /*behParam*/ 0x00000000, /*beh*/ bhvCoinSpawner),
+        
+        OBJECT(/*model*/ MODEL_NONE, /*pos*/ 0,0,0, /*angle*/ 0, 0, 0, /*behParam*/ 0x00000000, /*beh*/ bhvEnemySpawner),
+        
+        //OBJECT(/*model*/ MODEL_BLACK_BOBOMB, /*pos*/ -1328, 260, 4664, /*angle*/ 0, 0, 0, /*behParam*/ 0x00000000, /*beh*/ bhvStaticObject), // napalm man
+        
+        OBJECT(/*model*/ MODEL_KOOPA_SHELL, /*pos*/ -1328, 260, 4664 - 500, /*angle*/ 0, 0, 0, /*behParam*/ 0x00000000, /*beh*/ bhvKoopaShell),
+        
+        OBJECT(/*model*/ MODEL_DEFORMABLE_BOX, /*pos*/ -1328 + 500, 260 + 200, 4664, /*angle*/ 0, 0, 0, /*behParam*/ 0x00000000, /*beh*/ bhvDeformableBox),
+        
+        // ヒップドロップ　ウエハース
+        // 原点した　200四方
+        OBJECT(/*model*/ MODEL_NONE, /*pos*/ -1328, 260, 4664 + 500, /*angle*/ 0, 0, 0, /*behParam*/ 0x00000000, /*beh*/ bhvBreakableBoxSpawner),
+        
     END_AREA(),
 
     FREE_LEVEL_POOL(),
     MARIO_POS(/*area*/ 1, /*yaw*/ 180, /*pos*/ -1328, 260, 4664),
-    CALL(/*arg*/ 0, /*func*/ lvl_init_or_update),
-    CALL_LOOP(/*arg*/ 1, /*func*/ lvl_init_or_update),
+    CALL(/*arg*/ 0, /*func*/ lvl_init_or_update),//
+    CALL_LOOP(/*arg*/ 1, /*func*/ lvl_init_or_update),//!
     CLEAR_LEVEL(),
     SLEEP_BEFORE_EXIT(/*frames*/ 1),
     EXIT(),

@@ -85,7 +85,7 @@ void set_mario_pos(f32 x, f32 y, f32 z) {
 }
 
 /**
- * Apply one frame of platform rotation to Mario or an object using the given
+ * Apply one frame of platform rotationz to Mario or an object using the given
  * platform. If isMario is 0, use gCurrentObject.
  */
 void apply_platform_displacement(u32 isMario, struct Object *platform) {
@@ -111,7 +111,7 @@ void apply_platform_displacement(u32 isMario, struct Object *platform) {
     if (isMario) {
         D_8032FEC0 = 0;
         get_mario_pos(&x, &y, &z);
-    } else {
+    } else {//呼ばれない
         x = gCurrentObject->oPosX;
         y = gCurrentObject->oPosY;
         z = gCurrentObject->oPosZ;
@@ -137,20 +137,22 @@ void apply_platform_displacement(u32 isMario, struct Object *platform) {
         currentObjectOffset[1] = y - platformPosY;
         currentObjectOffset[2] = z - platformPosZ;
 
+        // 1フレーム前のローテーション
+        // angleVelでそのまま回転させるても、いい気がするがなぜ？
         rotation[0] = platform->oFaceAnglePitch - platform->oAngleVelPitch;
         rotation[1] = platform->oFaceAngleYaw - platform->oAngleVelYaw;
         rotation[2] = platform->oFaceAngleRoll - platform->oAngleVelRoll;
 
         mtxf_rotate_zxy_and_translate(displaceMatrix, currentObjectOffset, rotation);
-        linear_mtxf_transpose_mul_vec3f(displaceMatrix, relativeOffset, currentObjectOffset);
+        linear_mtxf_transpose_mul_vec3f(displaceMatrix, relativeOffset, currentObjectOffset);//逆回転
 
         rotation[0] = platform->oFaceAnglePitch;
         rotation[1] = platform->oFaceAngleYaw;
         rotation[2] = platform->oFaceAngleRoll;
 
         mtxf_rotate_zxy_and_translate(displaceMatrix, currentObjectOffset, rotation);
-        linear_mtxf_mul_vec3f(displaceMatrix, newObjectOffset, relativeOffset);
-
+        linear_mtxf_mul_vec3f(displaceMatrix, newObjectOffset, relativeOffset);//回転
+        
         x = platformPosX + newObjectOffset[0];
         y = platformPosY + newObjectOffset[1];
         z = platformPosZ + newObjectOffset[2];
@@ -158,7 +160,7 @@ void apply_platform_displacement(u32 isMario, struct Object *platform) {
 
     if (isMario) {
         set_mario_pos(x, y, z);
-    } else {
+    } else {//呼ばれない
         gCurrentObject->oPosX = x;
         gCurrentObject->oPosY = y;
         gCurrentObject->oPosZ = z;

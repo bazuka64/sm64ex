@@ -191,7 +191,7 @@ s32 turn_obj_away_from_steep_floor(struct Surface *objFloor, f32 floorY, f32 obj
     floor_nZ = objFloor->normal.z;
 
     // If the floor is steep and we are below it (i.e. walking into it), turn away from the floor.
-    if (floor_nY < 0.5 && floorY > o->oPosY) {
+    if (floor_nY < 0.5 && floorY > o->oPosY/*上り坂*/) {
         objVelXCopy = objVelX;
         objVelZCopy = objVelZ;
         turn_obj_away_from_surface(objVelXCopy, objVelZCopy, floor_nX, floor_nY, floor_nZ, &objYawX,
@@ -270,7 +270,7 @@ void calc_new_obj_vel_and_pos_y(struct Surface *objFloor, f32 objFloorY, f32 obj
 
     o->oPosY += o->oVelY;
 
-    //Snap the object up to the floor.
+    //Snap the object up to the floor. 上り坂を登る
     if (o->oPosY < objFloorY) {
         o->oPosY = objFloorY;
 
@@ -282,6 +282,7 @@ void calc_new_obj_vel_and_pos_y(struct Surface *objFloor, f32 objFloorY, f32 obj
         }
     }
 
+    // 坂道を滑る処理
     //! (Obj Position Crash) If you got an object with height past 2^31, the game would crash.
     if ((s32) o->oPosY >= (s32) objFloorY && (s32) o->oPosY < (s32) objFloorY + 37) {
         obj_orient_graph(o, floor_nX, floor_nY, floor_nZ);
@@ -413,7 +414,7 @@ void obj_splash(s32 waterY, s32 objY) {
 /**
  * Generic object move function. Handles walls, water, floors, and gravity.
  * Returns flags for certain interactions.
- */
+ */// change move angle yaw
 s16 object_step(void) {
     f32 objX = o->oPosX;
     f32 objY = o->oPosY;
@@ -427,7 +428,7 @@ s16 object_step(void) {
 
     s16 collisionFlags = 0;
 
-    // Find any wall collisions, receive the push, and set the flag.
+    // Find any wall collisions, receive the push, and set the flag. oMoveAngleYawをいじる
     if (obj_find_wall(objX + objVelX, objY, objZ + objVelZ, objVelX, objVelZ) == 0) {
         collisionFlags += OBJ_COL_FLAG_HIT_WALL;
     }
@@ -439,7 +440,7 @@ s16 object_step(void) {
             calc_new_obj_vel_and_pos_y_underwater(sObjFloor, floorY, objVelX, objVelZ, waterY);
             collisionFlags += OBJ_COL_FLAG_UNDERWATER;
         } else {
-            calc_new_obj_vel_and_pos_y(sObjFloor, floorY, objVelX, objVelZ);
+            calc_new_obj_vel_and_pos_y(sObjFloor, floorY, objVelX, objVelZ); // forwardvelを摩擦で弱める
         }
     } else {
         // Treat any awkward floors similar to a wall.

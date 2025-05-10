@@ -46,7 +46,7 @@ s8 gResetTimer;
 s8 D_8032C648;
 s8 gDebugLevelSelect;
 s8 gShowProfiler;
-s8 gShowDebugText;
+s8 gShowDebugText = TRUE;
 
 s32 gRumblePakPfs;
 struct RumbleData gRumbleDataQueue[3];
@@ -84,15 +84,15 @@ void send_display_list(struct SPTask *spTask) {
 #endif
 
 void produce_one_frame(void) {
-    gfx_start_frame();
+    gfx_start_frame();//
 
     const f32 master_mod = (f32)configMasterVolume / 127.0f;
     set_sequence_player_volume(SEQ_PLAYER_LEVEL, (f32)configMusicVolume / 127.0f * master_mod);
     set_sequence_player_volume(SEQ_PLAYER_SFX, (f32)configSfxVolume / 127.0f * master_mod);
     set_sequence_player_volume(SEQ_PLAYER_ENV, (f32)configEnvVolume / 127.0f * master_mod);
 
-    game_loop_one_iteration();
-    thread6_rumble_loop(NULL);
+    game_loop_one_iteration();//!
+    thread6_rumble_loop(NULL);//
 
     int samples_left = audio_api->buffered();
     u32 num_audio_samples = samples_left < audio_api->get_desired_buffered() ? SAMPLES_HIGH : SAMPLES_LOW;
@@ -103,13 +103,13 @@ void produce_one_frame(void) {
             audio_cnt = 2;
         }
         u32 num_audio_samples = audio_cnt < 2 ? 528 : 544;*/
-        create_next_audio_buffer(audio_buffer + i * (num_audio_samples * 2), num_audio_samples);
+        create_next_audio_buffer(audio_buffer + i * (num_audio_samples * 2), num_audio_samples);//
     }
     //printf("Audio samples before submitting: %d\n", audio_api->buffered());
 
-    audio_api->play((u8 *)audio_buffer, 2 * num_audio_samples * 4);
+    audio_api->play((u8 *)audio_buffer, 2 * num_audio_samples * 4);//
 
-    gfx_end_frame();
+    gfx_end_frame();//
 }
 
 void audio_shutdown(void) {
@@ -172,11 +172,11 @@ static void on_anim_frame(double time) {
 #endif
 
 void main_func(void) {
-    const char *gamedir = gCLIOpts.GameDir[0] ? gCLIOpts.GameDir : FS_BASEDIR;
-    const char *userpath = gCLIOpts.SavePath[0] ? gCLIOpts.SavePath : sys_user_path();
-    fs_init(sys_ropaths, gamedir, userpath);
+    const char *gamedir = gCLIOpts.GameDir[0] ? gCLIOpts.GameDir : FS_BASEDIR; // res
+    const char *userpath = gCLIOpts.SavePath[0] ? gCLIOpts.SavePath : sys_user_path(); // ~AppData/Roaming/sm64ex
+    fs_init(sys_ropaths, gamedir, userpath);//
 
-    configfile_load(configfile_name());
+    configfile_load(configfile_name());//
 
     if (gCLIOpts.FullScreen == 1)
         configWindow.fullscreen = true;
@@ -186,8 +186,8 @@ void main_func(void) {
     const size_t poolsize = gCLIOpts.PoolSize ? gCLIOpts.PoolSize : DEFAULT_POOL_SIZE;
     u64 *pool = malloc(poolsize);
     if (!pool) sys_fatal("Could not alloc %u bytes for main pool.\n", poolsize);
-    main_pool_init(pool, pool + poolsize / sizeof(pool[0]));
-    gEffectsMemoryPool = mem_pool_init(0x4000, MEMORY_POOL_LEFT);
+    main_pool_init(pool, pool + poolsize / sizeof(pool[0]));//
+    gEffectsMemoryPool = mem_pool_init(0x4000, MEMORY_POOL_LEFT);//
 
     #if defined(WAPI_SDL1) || defined(WAPI_SDL2)
     wm_api = &gfx_sdl;
@@ -221,7 +221,7 @@ void main_func(void) {
     #endif
     ;
 
-    gfx_init(wm_api, rendering_api, window_title);
+    gfx_init(wm_api, rendering_api, window_title);//
     wm_api->set_keyboard_callbacks(keyboard_on_key_down, keyboard_on_key_up, keyboard_on_all_keys_up);
 
     #if defined(AAPI_SDL1) || defined(AAPI_SDL2)
@@ -233,11 +233,14 @@ void main_func(void) {
         audio_api = &audio_null;
     }
 
-    audio_init();
-    sound_init();
+    audio_init();//
+    sound_init();//
 
-    thread5_game_loop(NULL);
-
+    thread5_game_loop(NULL);//
+    
+    extern void hook_from_main_func();
+    hook_from_main_func();
+    
     inited = true;
 
 #ifdef EXTERNAL_DATA
@@ -258,7 +261,7 @@ void main_func(void) {
     request_anim_frame(on_anim_frame);
 #else
     while (true) {
-        wm_api->main_loop(produce_one_frame);
+        wm_api->main_loop(produce_one_frame);//!
 #ifdef DISCORDRPC
         discord_update_rich_presence();
 #endif
@@ -267,7 +270,7 @@ void main_func(void) {
 }
 
 int main(int argc, char *argv[]) {
-    parse_cli_opts(argc, argv);
-    main_func();
+    parse_cli_opts(argc, argv);//
+    main_func();//!
     return 0;
 }

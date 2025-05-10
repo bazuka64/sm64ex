@@ -441,6 +441,7 @@ u8 sBackgroundMusicDefaultVolume[] = {
     70,  // SEQ_EVENT_CUTSCENE_ENDING
     65,  // SEQ_MENU_FILE_SELECT
     0,   // SEQ_EVENT_CUTSCENE_LAKITU (not in JP)
+    75,   // SEQ_LEVEL_FAIRY_TAIL
 };
 
 STATIC_ASSERT(ARRAY_COUNT(sBackgroundMusicDefaultVolume) == SEQ_COUNT,
@@ -1194,7 +1195,7 @@ void update_game_sound(void) {
 #endif
 
     process_all_sound_requests();
-    process_level_music_dynamics();
+    process_level_music_dynamics();//フェードイン・アウト？　曲調？
     if (gSequencePlayers[SEQ_PLAYER_SFX].channels[0] == &gSequenceChannelNone) {
         return;
     }

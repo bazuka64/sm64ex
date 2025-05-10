@@ -216,7 +216,7 @@ void update_air_without_turn(struct MarioState *m) {
     f32 intendedMag;
 
     if (!check_horizontal_wind(m)) {
-        dragThreshold = m->action == ACT_LONG_JUMP ? 48.0f : 32.0f;
+        dragThreshold = m->action == ACT_LONG_JUMP ? 48.0f : 32.0f;//幅跳びだとスティック入力が弱くなる
         m->forwardVel = approach_f32(m->forwardVel, 0.0f, 0.35f, 0.35f);
 
         if (m->input & INPUT_NONZERO_ANALOG) {
@@ -655,7 +655,10 @@ s32 act_riding_shell_air(struct MarioState *m) {
             break;
 
         case AIR_STEP_HIT_WALL:
-            mario_set_forward_vel(m, 0.0f);
+            //跳ね返るようにしたい
+            mario_bonk_reflection(m, FALSE);
+            
+            //mario_set_forward_vel(m, 0.0f);
             break;
 
         case AIR_STEP_HIT_LAVA_WALL:
@@ -931,6 +934,15 @@ s32 act_ground_pound(struct MarioState *m) {
             m->actionState = 1;
         }
     } else {
+        
+        // zが押されてたら
+        if (m->input & INPUT_Z_DOWN) {
+            m->vel[1] = -50.0f * 3;
+        }
+        else{
+            m->vel[1] = -50.0f;
+        }
+        
         set_mario_animation(m, MARIO_ANIM_GROUND_POUND);
 
         stepResult = perform_air_step(m, 0);
@@ -948,7 +960,14 @@ s32 act_ground_pound(struct MarioState *m) {
                 play_mario_heavy_landing_sound(m, SOUND_ACTION_TERRAIN_HEAVY_LANDING);
                 if (!check_fall_damage(m, ACT_HARD_BACKWARD_GROUND_KB)) {
                     m->particleFlags |= PARTICLE_MIST_CIRCLE | PARTICLE_HORIZONTAL_STAR;
-                    set_mario_action(m, ACT_GROUND_POUND_LAND, 0);
+                    //set_mario_action(m, ACT_GROUND_POUND_LAND, 0);
+                    
+                    // フロアがbreakableboxなら、アクション維持
+                    extern const BehaviorScript bhvBreakableBox[];
+                    if (!(m->floor->object && m->floor->object->behavior == bhvBreakableBox)) {
+                        set_mario_action(m, ACT_GROUND_POUND_LAND, 0);
+                    }
+                    m->peakHeight = m->floorHeight;
                 }
             }
             set_camera_shake_from_hit(SHAKE_GROUND_POUND);
@@ -1287,14 +1306,21 @@ s32 act_air_hit_wall(struct MarioState *m) {
     if (m->heldObj != NULL) {
         mario_drop_held_object(m);
     }
-
-    if (++(m->actionTimer) <= 2) {
+    
+    //if (++(m->actionTimer) <= 2) {//1フレーム内の1,2週目
+    if (++(m->actionTimer) <= 5) {
         if (m->input & INPUT_A_PRESSED) {
             m->vel[1] = 52.0f;
             m->faceAngle[1] += 0x8000;
-            return set_mario_action(m, ACT_WALL_KICK_AIR, 0);
+            
+            m->forwardVel *= 2;
+            if(m->forwardVel > 100.0f) {
+                m->forwardVel = 100.0f;
+            }
+            
+            return set_mario_action(m, ACT_WALL_KICK_AIR, 0); // 高速壁キック
         }
-    } else if (m->forwardVel >= 38.0f) {
+    } else if (m->forwardVel >= 38.0f) {//3週目
         m->wallKickTimer = 5;
         if (m->vel[1] > 0.0f) {
             m->vel[1] = 0.0f;
@@ -1302,7 +1328,7 @@ s32 act_air_hit_wall(struct MarioState *m) {
 
         m->particleFlags |= PARTICLE_VERTICAL_STAR;
         return set_mario_action(m, ACT_BACKWARD_AIR_KB, 0);
-    } else {
+    } else {//3フレーム目
         m->wallKickTimer = 5;
         if (m->vel[1] > 0.0f) {
             m->vel[1] = 0.0f;
@@ -1314,10 +1340,13 @@ s32 act_air_hit_wall(struct MarioState *m) {
         return set_mario_action(m, ACT_SOFT_BONK, 0);
     }
 
-#ifdef AVOID_UB
-    return
-#endif
+// #ifdef AVOID_UB
+//     return
+// #endif
+//     set_mario_animation(m, MARIO_ANIM_START_WALLKICK);
+    
     set_mario_animation(m, MARIO_ANIM_START_WALLKICK);
+    return FALSE;
 
     //! Missing return statement. The returned value is the result of the call
     // to set_mario_animation. In practice, this value is nonzero.
@@ -1351,6 +1380,7 @@ s32 act_forward_rollout(struct MarioState *m) {
 
         case AIR_STEP_LANDED:
             set_mario_action(m, ACT_FREEFALL_LAND_STOP, 0);
+            // set_mario_action(m, ACT_FREEFALL_LAND, 0); // ロールアウトから二弾ジャンプ
             play_mario_landing_sound(m, SOUND_ACTION_TERRAIN_LANDING);
             break;
 
@@ -1573,8 +1603,8 @@ s32 act_slide_kick(struct MarioState *m) {
 
         case AIR_STEP_LANDED:
             if (m->actionState == 0 && m->vel[1] < 0.0f) {
-                m->vel[1] = -m->vel[1] / 2.0f;
-                m->actionState = 1;
+                m->vel[1] = -m->vel[1] / 2.0f; // スライディングで跳ねる
+                m->actionState = 1; // 1回しか跳ねない？
                 m->actionTimer = 0;
             } else {
                 set_mario_action(m, ACT_SLIDE_KICK_SLIDE, 0);
@@ -2133,7 +2163,7 @@ s32 mario_execute_airborne_action(struct MarioState *m) {
         case ACT_WATER_JUMP:           cancel = act_water_jump(m);           break;
         case ACT_HOLD_WATER_JUMP:      cancel = act_hold_water_jump(m);      break;
         case ACT_STEEP_JUMP:           cancel = act_steep_jump(m);           break;
-        case ACT_BURNING_JUMP:         cancel = act_burning_jump(m);         break;
+        case ACT_BURNING_JUMP:         cancel = act_burning_jump(m);         break;//地上で火にあたった時の始動
         case ACT_BURNING_FALL:         cancel = act_burning_fall(m);         break;
         case ACT_TRIPLE_JUMP:          cancel = act_triple_jump(m);          break;
         case ACT_BACKFLIP:             cancel = act_backflip(m);             break;
@@ -2149,13 +2179,13 @@ s32 mario_execute_airborne_action(struct MarioState *m) {
         case ACT_SOFT_BONK:            cancel = act_soft_bonk(m);            break;
         case ACT_AIR_HIT_WALL:         cancel = act_air_hit_wall(m);         break;
         case ACT_FORWARD_ROLLOUT:      cancel = act_forward_rollout(m);      break;
-        case ACT_SHOT_FROM_CANNON:     cancel = act_shot_from_cannon(m);     break;
+        case ACT_SHOT_FROM_CANNON:     cancel = act_shot_from_cannon(m);     break;//キャノン飛んでる最中
         case ACT_BUTT_SLIDE_AIR:       cancel = act_butt_slide_air(m);       break;
         case ACT_HOLD_BUTT_SLIDE_AIR:  cancel = act_hold_butt_slide_air(m);  break;
         case ACT_LAVA_BOOST:           cancel = act_lava_boost(m);           break;
         case ACT_GETTING_BLOWN:        cancel = act_getting_blown(m);        break;
         case ACT_BACKWARD_ROLLOUT:     cancel = act_backward_rollout(m);     break;
-        case ACT_CRAZY_BOX_BOUNCE:     cancel = act_crazy_box_bounce(m);     break;
+        case ACT_CRAZY_BOX_BOUNCE:     cancel = act_crazy_box_bounce(m);     break;//掴むと跳ねる箱
         case ACT_SPECIAL_TRIPLE_JUMP:  cancel = act_special_triple_jump(m);  break;
         case ACT_GROUND_POUND:         cancel = act_ground_pound(m);         break;
         case ACT_THROWN_FORWARD:       cancel = act_thrown_forward(m);       break;

@@ -43,7 +43,7 @@ static const LevelScript script_exec_level_table[2
 ];
 #undef DEFINE_LEVEL
 #undef STUB_LEVEL
-
+// static const jfwoei[];は宣言
 static const LevelScript script_L1[4];
 static const LevelScript script_L2[4];
 static const LevelScript script_L3[4];
@@ -120,7 +120,7 @@ const LevelScript level_main_scripts_entry[] = {
         SLEEP(/*frames*/ 1),
     LOOP_UNTIL(/*op*/ OP_LT, /*arg*/ 0),
     JUMP_IF(/*op*/ OP_EQ, /*arg*/ -1, script_L2),
-    JUMP_IF(/*op*/ OP_EQ, /*arg*/ -2, script_L3),
+    JUMP_IF(/*op*/- OP_EQ, /*arg*/ -2, script_L3),
     JUMP_IF(/*op*/ OP_EQ, /*arg*/ -3, script_L4),
     JUMP_IF(/*op*/ OP_EQ, /*arg*/ -8, script_L1),
     JUMP_IF(/*op*/ OP_EQ, /*arg*/ -9, script_L5),

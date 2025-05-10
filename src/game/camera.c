@@ -3109,7 +3109,7 @@ void update_camera(struct Camera *c) {
         if (sSelectionFlags & CAM_MODE_MARIO_ACTIVE) {
             switch (c->mode) {
                 case CAMERA_MODE_BEHIND_MARIO:
-                    mode_behind_mario_camera(c);
+                    mode_behind_mario_camera(c); // 飛行中 水中
                     break;
 
                 case CAMERA_MODE_C_UP:
@@ -3121,7 +3121,7 @@ void update_camera(struct Camera *c) {
                     break;
 
                 case CAMERA_MODE_INSIDE_CANNON:
-                    mode_cannon_camera(c);
+                    mode_cannon_camera(c);// キャノン内
                     break;
 
 #ifdef BETTERCAMERA
@@ -3131,7 +3131,7 @@ void update_camera(struct Camera *c) {
 #endif
 
                 default:
-                    mode_mario_camera(c);
+                    mode_mario_camera(c); // マリオ視点 遠近
             }
         } else {
             switch (c->mode) {
@@ -3156,7 +3156,7 @@ void update_camera(struct Camera *c) {
                     break;
 
                 case CAMERA_MODE_RADIAL:
-                    mode_radial_camera(c);
+                    mode_radial_camera(c);//ボム兵の戦場 toride
                     break;
 
                 case CAMERA_MODE_OUTWARD_RADIAL:
@@ -3164,26 +3164,26 @@ void update_camera(struct Camera *c) {
                     break;
 
                 case CAMERA_MODE_CLOSE:
-                    mode_lakitu_camera(c);
+                    mode_lakitu_camera(c);//ボム兵の部屋　テレサ外
                     break;
 
                 case CAMERA_MODE_FREE_ROAM:
-                    mode_lakitu_camera(c);
+                    mode_lakitu_camera(c);// castle ground 最初
                     break;
                 case CAMERA_MODE_BOSS_FIGHT:
                     mode_boss_fight_camera(c);
                     break;
 
                 case CAMERA_MODE_PARALLEL_TRACKING:
-                    mode_parallel_tracking_camera(c);
+                    mode_parallel_tracking_camera(c); // テレサ本棚
                     break;
 
                 case CAMERA_MODE_SLIDE_HOOT:
-                    mode_slide_camera(c);
+                    mode_slide_camera(c);//スライダーはいった瞬間から
                     break;
 
                 case CAMERA_MODE_FIXED:
-                    mode_fixed_camera(c);
+                    mode_fixed_camera(c);// castle inside
                     break;
 
                 case CAMERA_MODE_SPIRAL_STAIRS:
@@ -3397,12 +3397,12 @@ void init_camera(struct Camera *c) {
                 marioOffset[2] = -800.f;
             }
             if (is_within_100_units_of_mario(-6901.f, 2376.f, -6509.f) == 1) {
-                start_cutscene(c, CUTSCENE_EXIT_WATERFALL);
+                start_cutscene(c, CUTSCENE_EXIT_WATERFALL);//メタル滝
             }
             if (is_within_100_units_of_mario(5408.f, 4500.f, 3637.f) == 1) {
-                start_cutscene(c, CUTSCENE_EXIT_FALL_WMOTR);
+                start_cutscene(c, CUTSCENE_EXIT_FALL_WMOTR);//天空
             }
-            gLakituState.mode = CAMERA_MODE_FREE_ROAM;
+            //gLakituState.mode = CAMERA_MODE_FREE_ROAM;
             break;
         case LEVEL_SA:
             marioOffset[2] = 200.f;
@@ -3434,11 +3434,11 @@ void init_camera(struct Camera *c) {
             marioOffset[2] = -300.f;
             break;
         case AREA_SL_IGLOO:
-            marioOffset[2] = -300.f;
+            marioOffset[2] = -300.f;//建物？
             break;
         case AREA_SL_OUTSIDE:
             if (is_within_100_units_of_mario(257.f, 2150.f, 1399.f) == 1) {
-                marioOffset[2] = -300.f;
+                marioOffset[2] = -300.f;//氷パズル？
             }
             break;
         case AREA_CCM_OUTSIDE:
@@ -4915,7 +4915,7 @@ s32 radial_camera_input(struct Camera *c, UNUSED f32 unused) {
             if (sModeOffsetYaw > -0x800) {
                 // The camera is now rotating right
                 if (!(gCameraMovementFlags & CAM_MOVE_ROTATE_RIGHT)) {
-                    gCameraMovementFlags |= CAM_MOVE_ROTATE_RIGHT;
+                    gCameraMovementFlags |= CAM_MOVE_ROTATE_RIGHT;//ここが大事
                 }
 
                 if (c->mode == CAMERA_MODE_RADIAL) {
@@ -5264,6 +5264,9 @@ u8 get_cutscene_from_mario_status(struct Camera *c) {
             case ACT_STAR_DANCE_NO_EXIT:
                 cutscene = CUTSCENE_DANCE_DEFAULT;
                 break;
+            // case ACT_SHAKUSI:
+            //     cutscene = CUTSCENE_SHAKUSI;
+            //     break;
         }
         switch (sMarioCamState->cameraEvent) {
             case CAM_EVENT_START_INTRO:
@@ -6426,6 +6429,9 @@ struct CameraTrigger sCamBBH[] = {
  *
  * Each table is terminated with NULL_TRIGGER
  */
+struct CameraTrigger sCamCustom[] = {
+	NULL_TRIGGER
+};
 struct CameraTrigger *sCameraTriggers[LEVEL_COUNT + 1] = {
     NULL,
     #include "levels/level_defines.h"
@@ -10885,26 +10891,26 @@ u8 sDanceCutsceneIndexTable[][4] = {
  * and if the result is non-zero, the camera will zoom out.
  */
 u8 sZoomOutAreaMasks[] = {
-    ZOOMOUT_AREA_MASK(0,0,0,0, 0,0,0,0), // Unused         | Unused
-    ZOOMOUT_AREA_MASK(0,0,0,0, 0,0,0,0), // Unused         | Unused
-    ZOOMOUT_AREA_MASK(0,0,0,0, 1,0,0,0), // BBH            | CCM
-    ZOOMOUT_AREA_MASK(0,0,0,0, 0,0,0,0), // CASTLE_INSIDE  | HMC
-    ZOOMOUT_AREA_MASK(1,0,0,0, 1,0,0,0), // SSL            | BOB
-    ZOOMOUT_AREA_MASK(1,0,0,0, 1,0,0,0), // SL             | WDW
-    ZOOMOUT_AREA_MASK(0,0,0,0, 1,1,0,0), // JRB            | THI
-    ZOOMOUT_AREA_MASK(0,0,0,0, 1,0,0,0), // TTC            | RR
-    ZOOMOUT_AREA_MASK(1,0,0,0, 1,0,0,0), // CASTLE_GROUNDS | BITDW
-    ZOOMOUT_AREA_MASK(0,0,0,0, 1,0,0,0), // VCUTM          | BITFS
-    ZOOMOUT_AREA_MASK(0,0,0,0, 1,0,0,0), // SA             | BITS
-    ZOOMOUT_AREA_MASK(1,0,0,0, 0,0,0,0), // LLL            | DDD
-    ZOOMOUT_AREA_MASK(1,0,0,0, 0,0,0,0), // WF             | ENDING
-    ZOOMOUT_AREA_MASK(0,0,0,0, 0,0,0,0), // COURTYARD      | PSS
-    ZOOMOUT_AREA_MASK(0,0,0,0, 1,0,0,0), // COTMC          | TOTWC
-    ZOOMOUT_AREA_MASK(1,0,0,0, 1,0,0,0), // BOWSER_1       | WMOTR
-    ZOOMOUT_AREA_MASK(0,0,0,0, 1,0,0,0), // Unused         | BOWSER_2
-    ZOOMOUT_AREA_MASK(1,0,0,0, 0,0,0,0), // BOWSER_3       | Unused
-    ZOOMOUT_AREA_MASK(1,0,0,0, 0,0,0,0), // TTM            | Unused
-    ZOOMOUT_AREA_MASK(0,0,0,0, 0,0,0,0), // Unused         | Unused
+	ZOOMOUT_AREA_MASK(0, 0, 0, 0, 0, 0, 0, 0), // Unused         | Unused
+	ZOOMOUT_AREA_MASK(0, 0, 0, 0, 0, 0, 0, 0), // Unused         | Unused
+	ZOOMOUT_AREA_MASK(0, 0, 0, 0, 1, 0, 0, 0), // BBH            | CCM
+	ZOOMOUT_AREA_MASK(0, 0, 0, 0, 0, 0, 0, 0), // CASTLE_INSIDE  | HMC
+	ZOOMOUT_AREA_MASK(1, 0, 0, 0, 1, 0, 0, 0), // SSL            | BOB
+	ZOOMOUT_AREA_MASK(1, 0, 0, 0, 1, 0, 0, 0), // SL             | WDW
+	ZOOMOUT_AREA_MASK(0, 0, 0, 0, 1, 1, 0, 0), // JRB            | THI
+	ZOOMOUT_AREA_MASK(0, 0, 0, 0, 1, 0, 0, 0), // TTC            | RR
+	ZOOMOUT_AREA_MASK(1, 0, 0, 0, 1, 0, 0, 0), // CASTLE_GROUNDS | BITDW
+	ZOOMOUT_AREA_MASK(0, 0, 0, 0, 1, 0, 0, 0), // VCUTM          | BITFS
+	ZOOMOUT_AREA_MASK(0, 0, 0, 0, 1, 0, 0, 0), // SA             | BITS
+	ZOOMOUT_AREA_MASK(1, 0, 0, 0, 0, 0, 0, 0), // LLL            | DDD
+	ZOOMOUT_AREA_MASK(1, 0, 0, 0, 0, 0, 0, 0), // WF             | ENDING
+	ZOOMOUT_AREA_MASK(0, 0, 0, 0, 0, 0, 0, 0), // COURTYARD      | PSS
+	ZOOMOUT_AREA_MASK(0, 0, 0, 0, 1, 0, 0, 0), // COTMC          | TOTWC
+	ZOOMOUT_AREA_MASK(1, 0, 0, 0, 1, 0, 0, 0), // BOWSER_1       | WMOTR
+	ZOOMOUT_AREA_MASK(0, 0, 0, 0, 1, 0, 0, 0), // Unused         | BOWSER_2
+	ZOOMOUT_AREA_MASK(1, 0, 0, 0, 0, 0, 0, 0), // BOWSER_3       | Unused
+	ZOOMOUT_AREA_MASK(1, 0, 0, 0, 0, 0, 0, 0), // TTM            | Unused
+	ZOOMOUT_AREA_MASK(0, 0, 0, 0, 1, 0, 0, 0), // Unused         | Unused
 };
 
 STATIC_ASSERT(ARRAY_COUNT(sZoomOutAreaMasks) - 1 == LEVEL_MAX / 2, "Make sure you edit sZoomOutAreaMasks when adding / removing courses.");
@@ -11232,6 +11238,16 @@ struct CutsceneSplinePoint sCcmOutsideCreditsSplineFocus[] = {
     { -1, 50, { -4730, -1215, 1795 } }
 };
 
+
+static BAD_RETURN(s32) cutscene_shakusi(UNUSED struct Camera *c) {
+    
+}
+
+struct Cutscene sCutsceneShakusi[] = {
+    { cutscene_shakusi, 30*5 },
+    { cutscene_exit_to_castle_grounds_end, 0 }
+};
+
 /**
  * Play the current cutscene until either gCutsceneTimer reaches the max time, or c->cutscene is set to 0
  *
@@ -11301,6 +11317,7 @@ void play_cutscene(struct Camera *c) {
         CUTSCENE(CUTSCENE_RACE_DIALOG, sCutsceneDialog)
         CUTSCENE(CUTSCENE_ENTER_PYRAMID_TOP, sCutsceneEnterPyramidTop)
         CUTSCENE(CUTSCENE_SSL_PYRAMID_EXPLODE, sCutscenePyramidTopExplode)
+        CUTSCENE(CUTSCENE_SHAKUSI, sCutsceneShakusi)
     }
 
 #undef CUTSCENE

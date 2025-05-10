@@ -54,7 +54,7 @@ void bobomb_check_interactions(void) {
             o->oAction = BOBOMB_ACT_LAUNCHED;
         }
 
-        if ((o->oInteractStatus & INT_STATUS_TOUCHED_BOB_OMB) != 0)
+        if ((o->oInteractStatus & INT_STATUS_TOUCHED_BOB_OMB) != 0)//連鎖爆発
             o->oAction = BOBOMB_ACT_EXPLODE;
 
         o->oInteractStatus = 0;
@@ -73,7 +73,7 @@ void bobomb_act_patrol(void) {
     o->oForwardVel = 5.0;
 
     collisionFlags = object_step();
-    if ((obj_return_home_if_safe(o, o->oHomeX, o->oHomeY, o->oHomeZ, 400) == 1)
+    if ((obj_return_home_if_safe(o, o->oHomeX, o->oHomeY, o->oHomeZ, 400) == 1)//マリオがいなかったら帰る
         && (obj_check_if_facing_toward_angle(o->oMoveAngleYaw, o->oAngleToMario, 0x2000) == 1)) {
         o->oBobombFuseLit = 1;
         o->oAction = BOBOMB_ACT_CHASE_MARIO;
@@ -243,7 +243,7 @@ void bhv_bobomb_loop(void) {
                 break;
 
             case HELD_THROWN:
-                bobomb_thrown_loop();
+                bobomb_thrown_loop();//1フレームだけ、空中はHELD_FREE
                 break;
 
             case HELD_DROPPED:

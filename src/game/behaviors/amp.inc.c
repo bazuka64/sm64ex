@@ -83,7 +83,7 @@ static void homing_amp_appear_loop(void) {
     if (o->oTimer < 30) {
         cur_obj_scale(0.1 + 0.9 * (f32)(o->oTimer / 30.0f));
     } else {
-        o->oAnimState = 1;
+        o->oAnimState = 1; // bilibili
     }
 
     // Once the timer becomes greater than 90, i.e. 91 frames have passed,
@@ -107,7 +107,7 @@ static void homing_amp_chase_loop(void) {
     }
 
     // If the amp is locked on to Mario, start "chasing" him by moving
-    // in a straight line at 15 units/second for 32 frames.
+    // in a straight line at 15 units/second for 32 frames. ロックオン時は直進
     if (o->oHomingAmpLockedOn == TRUE) {
         o->oForwardVel = 15.0f;
 
@@ -178,7 +178,7 @@ static void homing_amp_give_up_loop(void) {
  */
 static void amp_attack_cooldown_loop(void) {
     // Turn intangible and wait for 90 frames before chasing Mario again after hitting him.
-    o->header.gfx.unk38.animFrame += 2;
+    o->header.gfx.unk38.animFrame += 2; // ビリビリを速める * 3?
     o->oForwardVel = 0;
 
     cur_obj_become_intangible();
@@ -276,7 +276,7 @@ static void fixed_circling_amp_idle_loop(void) {
     f32 zToMario = gMarioObject->header.gfx.pos[2] - o->oPosZ;
     s16 vAngleToMario = atan2s(sqrtf(xToMario * xToMario + zToMario * zToMario), -yToMario);
 
-    obj_turn_toward_object(o, gMarioObject, 19, 0x1000);
+    obj_turn_toward_object(o, gMarioObject, 19/*O_FACE_ANGLE_YAW_INDEX*/, 0x1000);
     o->oFaceAnglePitch = approach_s16_symmetric(o->oFaceAnglePitch, vAngleToMario, 0x1000);
 
     // Oscillate 40 units up and down.

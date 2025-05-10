@@ -135,7 +135,9 @@
 #define MARIO_CAP_FLAGS   0x0000001F
 
 #define ACT_ID_MASK 0x000001FF
+// 0000 0000 0000 0000 0000 0001 1111 1111
 
+// 0000 0000 0000 0000 0000 0001 1100 0000
 #define ACT_GROUP_MASK       0x000001C0
 #define ACT_GROUP_STATIONARY /* 0x00000000 */ (0 << 6)
 #define ACT_GROUP_MOVING     /* 0x00000040 */ (1 << 6)
@@ -144,7 +146,10 @@
 #define ACT_GROUP_CUTSCENE   /* 0x00000100 */ (4 << 6)
 #define ACT_GROUP_AUTOMATIC  /* 0x00000140 */ (5 << 6)
 #define ACT_GROUP_OBJECT     /* 0x00000180 */ (6 << 6)
+#define ACT_GROUP_CUSTOM     /* 0x000001C0 */ (7 << 6)
+// 7 empty
 
+// 0000 0000 0000 0000 0000 001X XXXX XXXX
 #define ACT_FLAG_STATIONARY                  /* 0x00000200 */ (1 <<  9)
 #define ACT_FLAG_MOVING                      /* 0x00000400 */ (1 << 10)
 #define ACT_FLAG_AIR                         /* 0x00000800 */ (1 << 11)
@@ -167,6 +172,7 @@
 #define ACT_FLAG_SWIMMING_OR_FLYING          /* 0x10000000 */ (1 << 28)
 #define ACT_FLAG_WATER_OR_TEXT               /* 0x20000000 */ (1 << 29)
 #define ACT_FLAG_THROWING                    /* 0x80000000 */ (1 << 31)
+// 1000 0000 0000 0000 0000 000X XXXX XXXX
 
 #define ACT_UNINITIALIZED              0x00000000 // (0x000)
 
@@ -414,6 +420,9 @@
 #define ACT_PICKING_UP_BOWSER          0x00000390 // (0x190 | ACT_FLAG_STATIONARY)
 #define ACT_HOLDING_BOWSER             0x00000391 // (0x191 | ACT_FLAG_STATIONARY)
 #define ACT_RELEASING_BOWSER           0x00000392 // (0x192 | ACT_FLAG_STATIONARY)
+
+// group 0x1C0: custom actions
+#define ACT_SHAKUSI                    0x000001C0 // (0x1C0 | 0)
 
 /*
  this input mask is unused by the controller,

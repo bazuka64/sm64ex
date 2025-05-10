@@ -1,0 +1,1127 @@
+[
+    {
+        "name": "activated_bf_plat.inc.c",
+        "line_count": 146,
+        "understood": true
+    },
+    {
+        "name": "amp.inc.c",
+        "line_count": 344,
+        "understood": true
+    },
+    {
+        "name": "animated_floor_switch.inc.c",
+        "line_count": 77,
+        "understood": true
+    },
+    {
+        "name": "arrow_lift.inc.c",
+        "line_count": 90,
+        "understood": true
+    },
+    {
+        "name": "bbh_haunted_bookshelf.inc.c",
+        "line_count": 46,
+        "understood": true
+    },
+    {
+        "name": "bbh_merry_go_round.inc.c",
+        "line_count": 100,
+        "understood": true
+    },
+    {
+        "name": "bbh_tilting_trap.inc.c",
+        "line_count": 63,
+        "understood": true
+    },
+    {
+        "name": "beta_boo_key.inc.c",
+        "line_count": 174,
+        "understood": false
+    },
+    {
+        "name": "beta_bowser_anchor.inc.c",
+        "line_count": 23,
+        "understood": false
+    },
+    {
+        "name": "beta_chest.inc.c",
+        "line_count": 70,
+        "understood": false
+    },
+    {
+        "name": "beta_fish_splash_spawner.inc.c",
+        "line_count": 17,
+        "understood": false
+    },
+    {
+        "name": "beta_holdable_object.inc.c",
+        "line_count": 78,
+        "understood": false
+    },
+    {
+        "name": "beta_trampoline.inc.c",
+        "line_count": 87,
+        "understood": false
+    },
+    {
+        "name": "bird.inc.c",
+        "line_count": 118,
+        "understood": false
+    },
+    {
+        "name": "blue_coin.inc.c",
+        "line_count": 127,
+        "understood": false
+    },
+    {
+        "name": "blue_fish.inc.c",
+        "line_count": 127,
+        "understood": false
+    },
+    {
+        "name": "bobomb.inc.c",
+        "line_count": 421,
+        "understood": false
+    },
+    {
+        "name": "bomp.inc.c",
+        "line_count": 114,
+        "understood": false
+    },
+    {
+        "name": "boo.inc.c",
+        "line_count": 913,
+        "understood": false
+    },
+    {
+        "name": "boo_cage.inc.c",
+        "line_count": 107,
+        "understood": false
+    },
+    {
+        "name": "boulder.inc.c",
+        "line_count": 68,
+        "understood": false
+    },
+    {
+        "name": "bouncing_fireball.inc.c",
+        "line_count": 54,
+        "understood": false
+    },
+    {
+        "name": "bowling_ball.inc.c",
+        "line_count": 299,
+        "understood": false
+    },
+    {
+        "name": "bowser.inc.c",
+        "line_count": 1586,
+        "understood": false
+    },
+    {
+        "name": "bowser_bomb.inc.c",
+        "line_count": 51,
+        "understood": false
+    },
+    {
+        "name": "bowser_key.inc.c",
+        "line_count": 44,
+        "understood": false
+    },
+    {
+        "name": "bowser_key_cutscene.inc.c",
+        "line_count": 47,
+        "understood": false
+    },
+    {
+        "name": "bowser_puzzle_piece.inc.c",
+        "line_count": 263,
+        "understood": false
+    },
+    {
+        "name": "breakable_box.inc.c",
+        "line_count": 12,
+        "understood": false
+    },
+    {
+        "name": "breakable_box_small.inc.c",
+        "line_count": 138,
+        "understood": false
+    },
+    {
+        "name": "breakable_wall.inc.c",
+        "line_count": 16,
+        "understood": false
+    },
+    {
+        "name": "break_particles.inc.c",
+        "line_count": 24,
+        "understood": false
+    },
+    {
+        "name": "bub.inc.c",
+        "line_count": 128,
+        "understood": false
+    },
+    {
+        "name": "bubba.inc.c",
+        "line_count": 172,
+        "understood": false
+    },
+    {
+        "name": "bubble.inc.c",
+        "line_count": 24,
+        "understood": false
+    },
+    {
+        "name": "bullet_bill.inc.c",
+        "line_count": 78,
+        "understood": false
+    },
+    {
+        "name": "bully.inc.c",
+        "line_count": 370,
+        "understood": false
+    },
+    {
+        "name": "butterfly.inc.c",
+        "line_count": 112,
+        "understood": false
+    },
+    {
+        "name": "camera_lakitu.inc.c",
+        "line_count": 175,
+        "understood": false
+    },
+    {
+        "name": "cannon.inc.c",
+        "line_count": 132,
+        "understood": false
+    },
+    {
+        "name": "cannon_door.inc.c",
+        "line_count": 61,
+        "understood": false
+    },
+    {
+        "name": "cap.inc.c",
+        "line_count": 269,
+        "understood": false
+    },
+    {
+        "name": "capswitch.inc.c",
+        "line_count": 51,
+        "understood": false
+    },
+    {
+        "name": "castle_cannon_grate.inc.c",
+        "line_count": 6,
+        "understood": false
+    },
+    {
+        "name": "castle_flag.inc.c",
+        "line_count": 5,
+        "understood": false
+    },
+    {
+        "name": "castle_floor_trap.inc.c",
+        "line_count": 75,
+        "understood": false
+    },
+    {
+        "name": "celebration_star.inc.c",
+        "line_count": 90,
+        "understood": false
+    },
+    {
+        "name": "chain_chomp.inc.c",
+        "line_count": 554,
+        "understood": false
+    },
+    {
+        "name": "checkerboard_platform.inc.c",
+        "line_count": 97,
+        "understood": false
+    },
+    {
+        "name": "chuckya.inc.c",
+        "line_count": 210,
+        "understood": false
+    },
+    {
+        "name": "clam.inc.c",
+        "line_count": 64,
+        "understood": false
+    },
+    {
+        "name": "clock_arm.inc.c",
+        "line_count": 50,
+        "understood": false
+    },
+    {
+        "name": "cloud.inc.c",
+        "line_count": 217,
+        "understood": false
+    },
+    {
+        "name": "coffin.inc.c",
+        "line_count": 167,
+        "understood": false
+    },
+    {
+        "name": "coin.inc.c",
+        "line_count": 269,
+        "understood": false
+    },
+    {
+        "name": "collide_particles.inc.c",
+        "line_count": 84,
+        "understood": false
+    },
+    {
+        "name": "controllable_platform.inc.c",
+        "line_count": 217,
+        "understood": false
+    },
+    {
+        "name": "corkbox.inc.c",
+        "line_count": 58,
+        "understood": false
+    },
+    {
+        "name": "create_json.py",
+        "line_count": 24,
+        "understood": false
+    },
+    {
+        "name": "cruiser.inc.c",
+        "line_count": 22,
+        "understood": false
+    },
+    {
+        "name": "ddd_pole.inc.c",
+        "line_count": 22,
+        "understood": false
+    },
+    {
+        "name": "ddd_sub.inc.c",
+        "line_count": 6,
+        "understood": false
+    },
+    {
+        "name": "ddd_warp.inc.c",
+        "line_count": 8,
+        "understood": false
+    },
+    {
+        "name": "decorative_pendulum.inc.c",
+        "line_count": 31,
+        "understood": false
+    },
+    {
+        "name": "donut_platform.inc.c",
+        "line_count": 73,
+        "understood": false
+    },
+    {
+        "name": "door.inc.c",
+        "line_count": 139,
+        "understood": false
+    },
+    {
+        "name": "dorrie.inc.c",
+        "line_count": 173,
+        "understood": false
+    },
+    {
+        "name": "drawbridge.inc.c",
+        "line_count": 53,
+        "understood": false
+    },
+    {
+        "name": "elevator.inc.c",
+        "line_count": 115,
+        "understood": false
+    },
+    {
+        "name": "end_birds_1.inc.c",
+        "line_count": 29,
+        "understood": false
+    },
+    {
+        "name": "end_birds_2.inc.c",
+        "line_count": 31,
+        "understood": false
+    },
+    {
+        "name": "enemy_lakitu.inc.c",
+        "line_count": 205,
+        "understood": false
+    },
+    {
+        "name": "exclamation_box.inc.c",
+        "line_count": 146,
+        "understood": false
+    },
+    {
+        "name": "explosion.inc.c",
+        "line_count": 26,
+        "understood": false
+    },
+    {
+        "name": "express_elevator.inc.c",
+        "line_count": 27,
+        "understood": false
+    },
+    {
+        "name": "eyerok.inc.c",
+        "line_count": 552,
+        "understood": false
+    },
+    {
+        "name": "falling_pillar.inc.c",
+        "line_count": 144,
+        "understood": false
+    },
+    {
+        "name": "falling_rising_platform.inc.c",
+        "line_count": 28,
+        "understood": false
+    },
+    {
+        "name": "ferris_wheel.inc.c",
+        "line_count": 70,
+        "understood": false
+    },
+    {
+        "name": "fire_piranha_plant.inc.c",
+        "line_count": 147,
+        "understood": false
+    },
+    {
+        "name": "fire_spitter.inc.c",
+        "line_count": 44,
+        "understood": false
+    },
+    {
+        "name": "fish.inc.c",
+        "line_count": 286,
+        "understood": false
+    },
+    {
+        "name": "fishing_boo.inc.c",
+        "line_count": 37,
+        "understood": false
+    },
+    {
+        "name": "flame.inc.c",
+        "line_count": 53,
+        "understood": false
+    },
+    {
+        "name": "flamethrower.inc.c",
+        "line_count": 72,
+        "understood": false
+    },
+    {
+        "name": "flame_mario.inc.c",
+        "line_count": 41,
+        "understood": false
+    },
+    {
+        "name": "floating_box.inc.c",
+        "line_count": 5,
+        "understood": false
+    },
+    {
+        "name": "floating_platform.inc.c",
+        "line_count": 66,
+        "understood": false
+    },
+    {
+        "name": "flying_bookend_switch.inc.c",
+        "line_count": 303,
+        "understood": false
+    },
+    {
+        "name": "fly_guy.inc.c",
+        "line_count": 214,
+        "understood": false
+    },
+    {
+        "name": "goomba.inc.c",
+        "line_count": 321,
+        "understood": false
+    },
+    {
+        "name": "grand_star.inc.c",
+        "line_count": 72,
+        "understood": false
+    },
+    {
+        "name": "grill_door.inc.c",
+        "line_count": 51,
+        "understood": false
+    },
+    {
+        "name": "ground_particles.inc.c",
+        "line_count": 33,
+        "understood": false
+    },
+    {
+        "name": "haunted_chair.inc.c",
+        "line_count": 142,
+        "understood": false
+    },
+    {
+        "name": "heave_ho.inc.c",
+        "line_count": 128,
+        "understood": false
+    },
+    {
+        "name": "hidden_star.inc.c",
+        "line_count": 75,
+        "understood": false
+    },
+    {
+        "name": "hoot.inc.c",
+        "line_count": 270,
+        "understood": false
+    },
+    {
+        "name": "horizontal_grindel.inc.c",
+        "line_count": 43,
+        "understood": false
+    },
+    {
+        "name": "intro_lakitu.inc.c",
+        "line_count": 226,
+        "understood": false
+    },
+    {
+        "name": "intro_peach.inc.c",
+        "line_count": 53,
+        "understood": false
+    },
+    {
+        "name": "intro_scene.inc.c",
+        "line_count": 76,
+        "understood": false
+    },
+    {
+        "name": "jrb_ship.inc.c",
+        "line_count": 91,
+        "understood": false
+    },
+    {
+        "name": "jumping_box.inc.c",
+        "line_count": 70,
+        "understood": false
+    },
+    {
+        "name": "kickable_board.inc.c",
+        "line_count": 79,
+        "understood": false
+    },
+    {
+        "name": "king_bobomb.inc.c",
+        "line_count": 328,
+        "understood": false
+    },
+    {
+        "name": "klepto.inc.c",
+        "line_count": 387,
+        "understood": false
+    },
+    {
+        "name": "koopa.inc.c",
+        "line_count": 839,
+        "understood": false
+    },
+    {
+        "name": "koopa_shell.inc.c",
+        "line_count": 89,
+        "understood": false
+    },
+    {
+        "name": "koopa_shell_underwater.inc.c",
+        "line_count": 38,
+        "understood": false
+    },
+    {
+        "name": "lll_floating_wood_piece.inc.c",
+        "line_count": 40,
+        "understood": false
+    },
+    {
+        "name": "lll_hexagonal_ring.inc.c",
+        "line_count": 51,
+        "understood": false
+    },
+    {
+        "name": "lll_octagonal_rotating_mesh.inc.c",
+        "line_count": 76,
+        "understood": false
+    },
+    {
+        "name": "lll_rotating_hex_flame.inc.c",
+        "line_count": 67,
+        "understood": false
+    },
+    {
+        "name": "lll_sinking_rectangle.inc.c",
+        "line_count": 33,
+        "understood": false
+    },
+    {
+        "name": "lll_sinking_rock_block.inc.c",
+        "line_count": 7,
+        "understood": false
+    },
+    {
+        "name": "lll_volcano_flames.inc.c",
+        "line_count": 13,
+        "understood": false
+    },
+    {
+        "name": "mad_piano.inc.c",
+        "line_count": 76,
+        "understood": false
+    },
+    {
+        "name": "manta_ray.inc.c",
+        "line_count": 103,
+        "understood": false
+    },
+    {
+        "name": "metal_box.inc.c",
+        "line_count": 43,
+        "understood": false
+    },
+    {
+        "name": "mips.inc.c",
+        "line_count": 304,
+        "understood": false
+    },
+    {
+        "name": "moat_drainer.inc.c",
+        "line_count": 8,
+        "understood": false
+    },
+    {
+        "name": "moat_grill.inc.c",
+        "line_count": 8,
+        "understood": false
+    },
+    {
+        "name": "moneybag.inc.c",
+        "line_count": 233,
+        "understood": false
+    },
+    {
+        "name": "monty_mole.inc.c",
+        "line_count": 498,
+        "understood": false
+    },
+    {
+        "name": "moving_coin.inc.c",
+        "line_count": 267,
+        "understood": false
+    },
+    {
+        "name": "mr_blizzard.inc.c",
+        "line_count": 482,
+        "understood": false
+    },
+    {
+        "name": "mr_i.inc.c",
+        "line_count": 254,
+        "understood": false
+    },
+    {
+        "name": "mushroom_1up.inc.c",
+        "line_count": 320,
+        "understood": false
+    },
+    {
+        "name": "music_touch.inc.c",
+        "line_count": 10,
+        "understood": false
+    },
+    {
+        "name": "orange_number.inc.c",
+        "line_count": 20,
+        "understood": false
+    },
+    {
+        "name": "piranha_bubbles.inc.c",
+        "line_count": 105,
+        "understood": false
+    },
+    {
+        "name": "piranha_plant.inc.c",
+        "line_count": 341,
+        "understood": false
+    },
+    {
+        "name": "platform_on_track.inc.c",
+        "line_count": 311,
+        "understood": false
+    },
+    {
+        "name": "pokey.inc.c",
+        "line_count": 312,
+        "understood": false
+    },
+    {
+        "name": "pole.inc.c",
+        "line_count": 35,
+        "understood": false
+    },
+    {
+        "name": "pole_base.inc.c",
+        "line_count": 9,
+        "understood": false
+    },
+    {
+        "name": "purple_switch.inc.c",
+        "line_count": 79,
+        "understood": false
+    },
+    {
+        "name": "pyramid_elevator.inc.c",
+        "line_count": 85,
+        "understood": false
+    },
+    {
+        "name": "pyramid_top.inc.c",
+        "line_count": 155,
+        "understood": false
+    },
+    {
+        "name": "pyramid_wall.inc.c",
+        "line_count": 51,
+        "understood": false
+    },
+    {
+        "name": "racing_penguin.inc.c",
+        "line_count": 204,
+        "understood": false
+    },
+    {
+        "name": "recovery_heart.inc.c",
+        "line_count": 38,
+        "understood": false
+    },
+    {
+        "name": "reds_star_marker.inc.c",
+        "line_count": 6,
+        "understood": false
+    },
+    {
+        "name": "red_coin.inc.c",
+        "line_count": 81,
+        "understood": false
+    },
+    {
+        "name": "rolling_log.inc.c",
+        "line_count": 154,
+        "understood": false
+    },
+    {
+        "name": "rotating_octagonal_plat.inc.c",
+        "line_count": 17,
+        "understood": false
+    },
+    {
+        "name": "rotating_platform.inc.c",
+        "line_count": 36,
+        "understood": false
+    },
+    {
+        "name": "scuttlebug.inc.c",
+        "line_count": 135,
+        "understood": false
+    },
+    {
+        "name": "seaweed.inc.c",
+        "line_count": 45,
+        "understood": false
+    },
+    {
+        "name": "seesaw_platform.inc.c",
+        "line_count": 63,
+        "understood": false
+    },
+    {
+        "name": "shock_wave.inc.c",
+        "line_count": 26,
+        "understood": false
+    },
+    {
+        "name": "skeeter.inc.c",
+        "line_count": 166,
+        "understood": false
+    },
+    {
+        "name": "sliding_platform.inc.c",
+        "line_count": 60,
+        "understood": false
+    },
+    {
+        "name": "sliding_platform_2.inc.c",
+        "line_count": 54,
+        "understood": false
+    },
+    {
+        "name": "sl_snowman_wind.inc.c",
+        "line_count": 45,
+        "understood": false
+    },
+    {
+        "name": "sl_walking_penguin.inc.c",
+        "line_count": 117,
+        "understood": false
+    },
+    {
+        "name": "snowman.inc.c",
+        "line_count": 236,
+        "understood": false
+    },
+    {
+        "name": "snow_mound.inc.c",
+        "line_count": 43,
+        "understood": false
+    },
+    {
+        "name": "snufit.inc.c",
+        "line_count": 218,
+        "understood": false
+    },
+    {
+        "name": "sound_ambient.inc.c",
+        "line_count": 8,
+        "understood": false
+    },
+    {
+        "name": "sound_birds.inc.c",
+        "line_count": 20,
+        "understood": false
+    },
+    {
+        "name": "sound_sand.inc.c",
+        "line_count": 8,
+        "understood": false
+    },
+    {
+        "name": "sound_spawner.inc.c",
+        "line_count": 6,
+        "understood": false
+    },
+    {
+        "name": "sound_volcano.inc.c",
+        "line_count": 5,
+        "understood": false
+    },
+    {
+        "name": "sound_waterfall.inc.c",
+        "line_count": 5,
+        "understood": false
+    },
+    {
+        "name": "sparkle_spawn.inc.c",
+        "line_count": 17,
+        "understood": false
+    },
+    {
+        "name": "sparkle_spawn_star.inc.c",
+        "line_count": 118,
+        "understood": false
+    },
+    {
+        "name": "spawn_star.inc.c",
+        "line_count": 177,
+        "understood": false
+    },
+    {
+        "name": "spawn_star_exit.inc.c",
+        "line_count": 11,
+        "understood": false
+    },
+    {
+        "name": "spindel.inc.c",
+        "line_count": 79,
+        "understood": false
+    },
+    {
+        "name": "spindrift.inc.c",
+        "line_count": 40,
+        "understood": false
+    },
+    {
+        "name": "spiny.inc.c",
+        "line_count": 200,
+        "understood": false
+    },
+    {
+        "name": "square_platform_cycle.inc.c",
+        "line_count": 38,
+        "understood": false
+    },
+    {
+        "name": "star_door.inc.c",
+        "line_count": 52,
+        "understood": false
+    },
+    {
+        "name": "static_checkered_platform.inc.c",
+        "line_count": 23,
+        "understood": false
+    },
+    {
+        "name": "strong_wind_particle.inc.c",
+        "line_count": 65,
+        "understood": false
+    },
+    {
+        "name": "sushi.inc.c",
+        "line_count": 19,
+        "understood": false
+    },
+    {
+        "name": "swing_platform.inc.c",
+        "line_count": 18,
+        "understood": false
+    },
+    {
+        "name": "switch_hidden_objects.inc.c",
+        "line_count": 99,
+        "understood": false
+    },
+    {
+        "name": "swoop.inc.c",
+        "line_count": 122,
+        "understood": false
+    },
+    {
+        "name": "thi_top.inc.c",
+        "line_count": 44,
+        "understood": false
+    },
+    {
+        "name": "thwomp.inc.c",
+        "line_count": 51,
+        "understood": false
+    },
+    {
+        "name": "tilting_inverted_pyramid.inc.c",
+        "line_count": 138,
+        "understood": false
+    },
+    {
+        "name": "tower_door.inc.c",
+        "line_count": 10,
+        "understood": false
+    },
+    {
+        "name": "tower_platform.inc.c",
+        "line_count": 109,
+        "understood": false
+    },
+    {
+        "name": "tox_box.inc.c",
+        "line_count": 79,
+        "understood": false
+    },
+    {
+        "name": "treasure_chest.inc.c",
+        "line_count": 205,
+        "understood": false
+    },
+    {
+        "name": "tree_particles.inc.c",
+        "line_count": 67,
+        "understood": false
+    },
+    {
+        "name": "triplet_butterfly.inc.c",
+        "line_count": 171,
+        "understood": false
+    },
+    {
+        "name": "ttc_2d_rotator.inc.c",
+        "line_count": 88,
+        "understood": false
+    },
+    {
+        "name": "ttc_cog.inc.c",
+        "line_count": 55,
+        "understood": false
+    },
+    {
+        "name": "ttc_elevator.inc.c",
+        "line_count": 52,
+        "understood": false
+    },
+    {
+        "name": "ttc_moving_bar.inc.c",
+        "line_count": 170,
+        "understood": false
+    },
+    {
+        "name": "ttc_pendulum.inc.c",
+        "line_count": 86,
+        "understood": false
+    },
+    {
+        "name": "ttc_pit_block.inc.c",
+        "line_count": 71,
+        "understood": false
+    },
+    {
+        "name": "ttc_rotating_solid.inc.c",
+        "line_count": 79,
+        "understood": false
+    },
+    {
+        "name": "ttc_spinner.inc.c",
+        "line_count": 36,
+        "understood": false
+    },
+    {
+        "name": "ttc_treadmill.inc.c",
+        "line_count": 66,
+        "understood": false
+    },
+    {
+        "name": "tumbling_bridge.inc.c",
+        "line_count": 112,
+        "understood": false
+    },
+    {
+        "name": "tuxie.inc.c",
+        "line_count": 316,
+        "understood": false
+    },
+    {
+        "name": "tweester.inc.c",
+        "line_count": 156,
+        "understood": false
+    },
+    {
+        "name": "ukiki.inc.c",
+        "line_count": 645,
+        "understood": false
+    },
+    {
+        "name": "ukiki_cage.inc.c",
+        "line_count": 106,
+        "understood": false
+    },
+    {
+        "name": "unagi.inc.c",
+        "line_count": 203,
+        "understood": false
+    },
+    {
+        "name": "unused_particle_spawn.inc.c",
+        "line_count": 24,
+        "understood": false
+    },
+    {
+        "name": "unused_poundable_platform.inc.c",
+        "line_count": 28,
+        "understood": false
+    },
+    {
+        "name": "warp.inc.c",
+        "line_count": 32,
+        "understood": false
+    },
+    {
+        "name": "water_bomb.inc.c",
+        "line_count": 255,
+        "understood": false
+    },
+    {
+        "name": "water_bomb_cannon.inc.c",
+        "line_count": 102,
+        "understood": false
+    },
+    {
+        "name": "water_mist.inc.c",
+        "line_count": 9,
+        "understood": false
+    },
+    {
+        "name": "water_mist_particle.inc.c",
+        "line_count": 21,
+        "understood": false
+    },
+    {
+        "name": "water_objs.inc.c",
+        "line_count": 114,
+        "understood": false
+    },
+    {
+        "name": "water_pillar.inc.c",
+        "line_count": 72,
+        "understood": false
+    },
+    {
+        "name": "water_ring.inc.c",
+        "line_count": 234,
+        "understood": false
+    },
+    {
+        "name": "water_splashes_and_waves.inc.c",
+        "line_count": 133,
+        "understood": false
+    },
+    {
+        "name": "water_wave.inc.c",
+        "line_count": 12,
+        "understood": false
+    },
+    {
+        "name": "wdw_water_level.inc.c",
+        "line_count": 65,
+        "understood": false
+    },
+    {
+        "name": "whirlpool.inc.c",
+        "line_count": 79,
+        "understood": false
+    },
+    {
+        "name": "white_puff.inc.c",
+        "line_count": 20,
+        "understood": false
+    },
+    {
+        "name": "white_puff_explode.inc.c",
+        "line_count": 37,
+        "understood": false
+    },
+    {
+        "name": "whomp.inc.c",
+        "line_count": 259,
+        "understood": false
+    },
+    {
+        "name": "wiggler.inc.c",
+        "line_count": 453,
+        "understood": false
+    },
+    {
+        "name": "wind.inc.c",
+        "line_count": 39,
+        "understood": false
+    },
+    {
+        "name": "yoshi.inc.c",
+        "line_count": 180,
+        "understood": false
+    }
+]

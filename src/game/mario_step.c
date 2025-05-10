@@ -345,6 +345,32 @@ s32 perform_ground_step(struct MarioState *m) {
     return stepResult;
 }
 
+s32 perform_ground_step_16(struct MarioState *m) {
+    s32 i;
+    u32 stepResult;
+    Vec3f intendedPos;
+
+    for (i = 0; i < 16; i++) {
+        intendedPos[0] = m->pos[0] + m->floor->normal.y * (m->vel[0] / 16.0f);
+        intendedPos[2] = m->pos[2] + m->floor->normal.y * (m->vel[2] / 16.0f);
+        intendedPos[1] = m->pos[1];
+
+        stepResult = perform_ground_quarter_step(m, intendedPos);
+        if (stepResult == GROUND_STEP_LEFT_GROUND || stepResult == GROUND_STEP_HIT_WALL_STOP_QSTEPS) {
+            break;
+        }
+    }
+
+    m->terrainSoundAddend = mario_get_terrain_sound_addend(m);
+    vec3f_copy(m->marioObj->header.gfx.pos, m->pos);
+    vec3s_set(m->marioObj->header.gfx.angle, 0, m->faceAngle[1], 0);
+
+    if (stepResult == GROUND_STEP_HIT_WALL_CONTINUE_QSTEPS) {
+        stepResult = GROUND_STEP_HIT_WALL;
+    }
+    return stepResult;
+}
+
 u32 check_ledge_grab(struct MarioState *m, struct Surface *wall, Vec3f intendedPos, Vec3f nextPos) {
     struct Surface *ledgeFloor;
     Vec3f ledgePos;
@@ -515,7 +541,7 @@ void apply_twirl_gravity(struct MarioState *m) {
         m->vel[1] = terminalVelocity;
     }
 }
-
+// 小ジャンプ
 u32 should_strengthen_gravity_for_jump_ascent(struct MarioState *m) {
     if (!(m->flags & MARIO_UNKNOWN_08)) {
         return FALSE;

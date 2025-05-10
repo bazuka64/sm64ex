@@ -243,6 +243,7 @@ struct Surface
     } normal;
     /*0x28*/ f32 originOffset;
     /*0x2C*/ struct Object *object;
+    s16 vertex_indices[3];
 };
 
 struct MarioBodyState

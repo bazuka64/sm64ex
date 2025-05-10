@@ -814,7 +814,7 @@ static s32 obj_update_standard_actions(f32 scale) {
         return FALSE;
     }
 }
-
+// 攻撃されたら死に方すら選べねえ
 static s32 obj_check_attacks(struct ObjectHitbox *hitbox, s32 attackedMarioAction) {
     s32 attackType;
 
@@ -967,3 +967,5 @@ void obj_spit_fire(s16 relativePosX, s16 relativePosY, s16 relativePosZ, f32 sca
 #include "behaviors/reds_star_marker.inc.c"
 #include "behaviors/triplet_butterfly.inc.c"
 #include "behaviors/bubba.inc.c"
+
+//#include "behaviors/mmd.inc.c"

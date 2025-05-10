@@ -18,7 +18,7 @@
  */
 static void const *sActivatedBackAndForthPlatformCollisionModels[] = {
     /* ACTIVATED_BF_PLAT_TYPE_BITS_ARROW_PLAT */ bits_seg7_collision_0701AD54,
-    /* ACTIVATED_BF_PLAT_TYPE_BITFS_MESH_PLAT */ bitfs_seg7_collision_070157E0,
+    /* ACTIVATED_BF_PLAT_TYPE_BITFS_MESH_PLAT */ bitfs_seg7_collision_070157E0, // 格子 unused ?
     /* ACTIVATED_BF_PLAT_TYPE_BITFS_ELEVATOR  */ bitfs_seg7_collision_07015124
 };
 
@@ -27,7 +27,7 @@ static void const *sActivatedBackAndForthPlatformCollisionModels[] = {
  */
 void bhv_activated_back_and_forth_platform_init(void) {
     // Equivalent to the first behavior param byte & 3 (last 2 bits of the byte).
-    s32 platformType = ((u16)(o->oBehParams >> 16) & 0x0300) >> 8;
+    s32 platformType = ((u16)(o->oBehParams >> 16) & 0x0300) >> 8; // 0,1,2
 
     // The BitS arrow platform should flip 180º (0x8000 angle units), but
     // there is no reason for the other platforms to flip.
@@ -82,7 +82,7 @@ void bhv_activated_back_and_forth_platform_update(void) {
         } else {
             // After the wait period is over, we start moving, by adding the velocity
             // to the positional offset.
-            o->oActivatedBackAndForthPlatformOffset += o->oActivatedBackAndForthPlatformVel;
+            o->oActivatedBackAndForthPlatformOffset += o->oActivatedBackAndForthPlatformVel; // 10 or -10
 
             // clamp_f32 returns whether the value needed to be clamped.
             // So if the offset got out of bounds (i.e. platform has reached an end of its path),
@@ -100,7 +100,7 @@ void bhv_activated_back_and_forth_platform_update(void) {
                 // the platform will reverse directions. Otherwise, it will stop.
                 // This means that if Mario touches the platform initially, then gets off,
                 // it will do a full round trip then stop (assuming Mario stays within 3000 units).
-                if (o->oVelY < 0.0f || o->oActivatedBackAndForthPlatformVel > 0.0f) {
+                if (o->oVelY < 0.0f/*mario is on platform*/ || o->oActivatedBackAndForthPlatformVel > 0.0f) {
                     o->oActivatedBackAndForthPlatformVel = -o->oActivatedBackAndForthPlatformVel;
                 } else {
                     o->oActivatedBackAndForthPlatformVel = 0.0f;
@@ -126,7 +126,7 @@ void bhv_activated_back_and_forth_platform_update(void) {
 
     // Update the object's position.
     // If the platform moves vertically...
-    if (o->oActivatedBackAndForthPlatformVertical != FALSE) {
+    if (o->oActivatedBackAndForthPlatformVertical != FALSE) { // vertical
         // ...set its position to its original position + the offset.
         o->oPosY = o->oHomeY + o->oActivatedBackAndForthPlatformOffset;
     } else {
@@ -142,5 +142,5 @@ void bhv_activated_back_and_forth_platform_update(void) {
     }
 
     // Compute the object's velocity using the old saved position.
-    obj_perform_position_op(POS_OP_COMPUTE_VELOCITY);
+    obj_perform_position_op(POS_OP_COMPUTE_VELOCITY); // oVelY = 10 意味ない
 }

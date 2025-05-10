@@ -593,14 +593,14 @@ void game_loop_one_iteration(void) {
 
     audio_game_loop_tick();
     config_gfx_pool();
-    read_controller_inputs();
-    levelCommandAddr = level_script_execute(levelCommandAddr);
-    display_and_vsync();
+    read_controller_inputs();//
+    levelCommandAddr = level_script_execute(levelCommandAddr);//!
+    display_and_vsync();//
 
     // when debug info is enabled, print the "BUF %d" information.
     if (gShowDebugText) {
         // subtract the end of the gfx pool with the display list to obtain the
         // amount of free space remaining.
-        print_text_fmt_int(180, 20, "BUF %d", gGfxPoolEnd - (u8 *) gDisplayListHead);
+        //print_text_fmt_int(180, 20, "BUF %d", gGfxPoolEnd - (u8 *) gDisplayListHead);
     }
 }

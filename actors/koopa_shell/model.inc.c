@@ -397,8 +397,9 @@ const Gfx koopa_shell_seg8_dl_08027420[] = {
 
 // 0x08027470
 static const Lights1 koopa_shell_seg8_lights_08027470 = gdSPDefLights1(
-    0x3f, 0x3f, 0x3f,
-    0xff, 0xff, 0xff, 0x28, 0x28, 0x28
+    0x3f, 0x3f, 0x3f, // ambient
+    0xff, 0xff, 0xff, 0x28, 0x28, 0x28 // diffuse diffuse_direction
+    //0x00, 0x00, 0xff, 0x28, 0x28, 0x28 
 );
 
 // 0x08027488
@@ -583,11 +584,11 @@ const Gfx koopa_shell_seg8_dl_08028B78[] = {
     gsDPTileSync(),
     gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 0, G_TX_RENDERTILE, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, G_TX_NOLOD, G_TX_WRAP | G_TX_NOMIRROR, 5, G_TX_NOLOD),
     gsDPSetTileSize(0, 0, 0, (32 - 1) << G_TEXTURE_IMAGE_FRAC, (32 - 1) << G_TEXTURE_IMAGE_FRAC),
-    gsSPDisplayList(koopa_shell_seg8_dl_080288E0),
-    gsSPDisplayList(koopa_shell_seg8_dl_08028978),
+    gsSPDisplayList(koopa_shell_seg8_dl_080288E0),//本体 back
+    gsSPDisplayList(koopa_shell_seg8_dl_08028978),//下　front
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
     gsDPPipeSync(),
     gsDPSetCombineMode(G_CC_SHADE, G_CC_SHADE),
-    gsSPDisplayList(koopa_shell_seg8_dl_08028A20),
+    gsSPDisplayList(koopa_shell_seg8_dl_08028A20),//アーマー
     gsSPEndDisplayList(),
 };

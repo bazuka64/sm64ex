@@ -1530,7 +1530,7 @@ s32 mario_execute_submerged_action(struct MarioState *m) {
         case ACT_HOLD_WATER_IDLE:            cancel = act_hold_water_idle(m);            break;
         case ACT_WATER_ACTION_END:           cancel = act_water_action_end(m);           break;
         case ACT_HOLD_WATER_ACTION_END:      cancel = act_hold_water_action_end(m);      break;
-        case ACT_DROWNING:                   cancel = act_drowning(m);                   break;
+        case ACT_DROWNING:                   cancel = act_drowning(m);                   break;//溺れる
         case ACT_BACKWARD_WATER_KB:          cancel = act_backward_water_kb(m);          break;
         case ACT_FORWARD_WATER_KB:           cancel = act_forward_water_kb(m);           break;
         case ACT_WATER_DEATH:                cancel = act_water_death(m);                break;
@@ -1544,7 +1544,7 @@ s32 mario_execute_submerged_action(struct MarioState *m) {
         case ACT_WATER_SHELL_SWIMMING:       cancel = act_water_shell_swimming(m);       break;
         case ACT_WATER_THROW:                cancel = act_water_throw(m);                break;
         case ACT_WATER_PUNCH:                cancel = act_water_punch(m);                break;
-        case ACT_WATER_PLUNGE:               cancel = act_water_plunge(m);               break;
+        case ACT_WATER_PLUNGE:               cancel = act_water_plunge(m);               break;//着水
         case ACT_CAUGHT_IN_WHIRLPOOL:        cancel = act_caught_in_whirlpool(m);        break;
         case ACT_METAL_WATER_STANDING:       cancel = act_metal_water_standing(m);       break;
         case ACT_METAL_WATER_WALKING:        cancel = act_metal_water_walking(m);        break;

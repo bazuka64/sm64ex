@@ -451,7 +451,7 @@
 #define MODEL_MR_I                        0x67        // mr_i_geo
 #define MODEL_DORRIE                      0x68        // dorrie_geo
 
-// other models
+// other models ユニークIDs
 #define MODEL_YELLOW_COIN                 0x74        // yellow_coin_geo
 #define MODEL_YELLOW_COIN_NO_SHADOW       0x75        // yellow_coin_no_shadow_geo
 #define MODEL_BLUE_COIN                   0x76        // blue_coin_geo
@@ -563,6 +563,9 @@
 #define MODEL_CHUCKYA                     0xDF        // chuckya_geo
 #define MODEL_WHITE_PUFF                  0xE0        // white_puff_geo
 #define MODEL_TRAJECTORY_MARKER_BALL          0xE1        // bowling_ball_track_geo - duplicate used in SSL Pyramid small sized and as a track ball
+
+// カスタムモデル
+#define MODEL_DEFORMABLE_BOX                   0xF0
 
 // Menu Models (overwrites Level Geometry IDs)
 #define MODEL_MAIN_MENU_MARIO_SAVE_BUTTON         MODEL_LEVEL_GEOMETRY_03   // main_menu_geo_0001D0

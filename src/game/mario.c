@@ -23,6 +23,7 @@
 #include "mario_actions_object.h"
 #include "mario_actions_stationary.h"
 #include "mario_actions_submerged.h"
+#include "mario_actions_custom.h"
 #include "mario_misc.h"
 #include "mario_step.h"
 #include "memory.h"
@@ -883,10 +884,16 @@ static u32 set_mario_action_airborne(struct MarioState *m, u32 action, u32 actio
             break;
 
         case ACT_SLIDE_KICK:
-            m->vel[1] = 12.0f;
-            if (m->forwardVel < 32.0f) {
-                m->forwardVel = 32.0f;
+            //m->vel[1] = 12.0f;
+            // if (m->forwardVel < 32.0f) {
+            //     m->forwardVel = 32.0f;
+            // }
+            
+            m->vel[1] = 3*12.0f;
+            if (m->forwardVel < 2*32.0f) {
+                m->forwardVel = 2*32.0f;
             }
+            
             break;
 
         case ACT_JUMP_KICK:
@@ -986,6 +993,7 @@ static u32 set_mario_action_cutscene(struct MarioState *m, u32 action, UNUSED u3
  * Puts Mario into a given action, putting Mario through the appropriate
  * specific function if needed.
  */
+// アクションが切り替わる前にvelなどを事前にセット
 u32 set_mario_action(struct MarioState *m, u32 action, u32 actionArg) {
     switch (action & ACT_GROUP_MASK) {
         case ACT_GROUP_MOVING:
@@ -1016,8 +1024,8 @@ u32 set_mario_action(struct MarioState *m, u32 action, u32 actionArg) {
     m->prevAction = m->action;
     m->action = action;
     m->actionArg = actionArg;
-    m->actionState = 0;
-    m->actionTimer = 0;
+    m->actionState = 0; // oAction
+    m->actionTimer = 0; // oTimer
 
     return TRUE;
 }
@@ -1040,7 +1048,7 @@ s32 set_jump_from_landing(struct MarioState *m) {
         if ((m->doubleJumpTimer == 0) || (m->squishTimer != 0)) {
             set_mario_action(m, ACT_JUMP, 0);
         } else {
-            switch (m->prevAction) {
+            switch (m->prevAction) {//landからwalkingに移った後も２弾ジャンプに移行できる
                 case ACT_JUMP_LAND:
                     set_mario_action(m, ACT_DOUBLE_JUMP, 0);
                     break;
@@ -1049,7 +1057,7 @@ s32 set_jump_from_landing(struct MarioState *m) {
                     set_mario_action(m, ACT_DOUBLE_JUMP, 0);
                     break;
 
-                case ACT_SIDE_FLIP_LAND_STOP:
+                case ACT_SIDE_FLIP_LAND_STOP://無入力にしてland stopにすると、方向転換して２弾ジャンプが出せる
                     set_mario_action(m, ACT_DOUBLE_JUMP, 0);
                     break;
 
@@ -1234,7 +1242,7 @@ void squish_mario_model(struct MarioState *m) {
             
         }
         // If timer is less than 16, rubber-band Mario's size scale up and down.
-        else if (m->squishTimer <= 16) {
+        else if (m->squishTimer <= 16) { //復活
             m->squishTimer -= 1;
 
             m->marioObj->header.gfx.scale[1] =
@@ -1243,7 +1251,7 @@ void squish_mario_model(struct MarioState *m) {
                 ((sSquishScaleOverTime[15 - m->squishTimer] * 0.4f) / 100.0f) + 1.0f;
 
             m->marioObj->header.gfx.scale[2] = m->marioObj->header.gfx.scale[0];
-        } else {
+        } else {//つぶれ中
             m->squishTimer -= 1;
 
             vec3f_set(m->marioObj->header.gfx.scale, 1.4f, 0.4f, 1.4f);
@@ -1609,7 +1617,7 @@ u32 update_and_return_cap_flags(struct MarioState *m) {
 
         if ((m->capTimer <= 60)
             || ((action != ACT_READING_AUTOMATIC_DIALOG) && (action != ACT_READING_NPC_DIALOG)
-                && (action != ACT_READING_SIGN) && (action != ACT_IN_CANNON))) {
+                && (action != ACT_READING_SIGN) && (action != ACT_IN_CANNON))) { // ダイアログ読んでる間わcapTimerが止まる
             m->capTimer -= 1;
         }
 
@@ -1757,9 +1765,9 @@ s32 execute_mario_action(UNUSED struct Object *o) {
     if (gMarioState->action) {
         gMarioState->marioObj->header.gfx.node.flags &= ~GRAPH_RENDER_INVISIBLE;
         mario_reset_bodystate(gMarioState);
-        update_mario_inputs(gMarioState);
+        update_mario_inputs(gMarioState);//
         mario_handle_special_floors(gMarioState);
-        mario_process_interactions(gMarioState);
+        mario_process_interactions(gMarioState);//! 壁パンチ・キック
 
         // If Mario is OOB, stop executing actions.
         if (gMarioState->floor == NULL) {
@@ -1772,40 +1780,64 @@ s32 execute_mario_action(UNUSED struct Object *o) {
         while (inLoop) {
             switch (gMarioState->action & ACT_GROUP_MASK) {
                 case ACT_GROUP_STATIONARY:
-                    inLoop = mario_execute_stationary_action(gMarioState);
+                    inLoop = mario_execute_stationary_action(gMarioState);//
                     break;
 
                 case ACT_GROUP_MOVING:
-                    inLoop = mario_execute_moving_action(gMarioState);
+                    inLoop = mario_execute_moving_action(gMarioState);//
                     break;
 
                 case ACT_GROUP_AIRBORNE:
-                    inLoop = mario_execute_airborne_action(gMarioState);
+                    inLoop = mario_execute_airborne_action(gMarioState);//
                     break;
 
                 case ACT_GROUP_SUBMERGED:
-                    inLoop = mario_execute_submerged_action(gMarioState);
+                    inLoop = mario_execute_submerged_action(gMarioState);//
                     break;
 
                 case ACT_GROUP_CUTSCENE:
-                    inLoop = mario_execute_cutscene_action(gMarioState);
+                    inLoop = mario_execute_cutscene_action(gMarioState);//
                     break;
 
                 case ACT_GROUP_AUTOMATIC:
-                    inLoop = mario_execute_automatic_action(gMarioState);
+                    inLoop = mario_execute_automatic_action(gMarioState);//
                     break;
 
                 case ACT_GROUP_OBJECT:
-                    inLoop = mario_execute_object_action(gMarioState);
+                    inLoop = mario_execute_object_action(gMarioState);//
+                    break;
+                    
+                case ACT_GROUP_CUSTOM:
+                    inLoop = mario_execute_custom_action(gMarioState);
                     break;
             }
         }
+        
+        // hook
+        // mario is in air
+        if (gMarioState->action & ACT_FLAG_AIR) {
+            // if press a
+            if (gMarioState->input & INPUT_A_DOWN) {
+                // 一番近いコインを探す
+                float dist;
+                gCurrentObject = gMarioObject;
+                struct Object *nearestCoin = cur_obj_find_nearest_object_with_behavior(bhvYellowCoin, &dist);
+                // 一番近いコインが見つかった場合
+                if (nearestCoin != NULL) {
+                    if (dist < 300) {
+                        // マリオのポジションを設定
+                        vec3f_copy(gMarioState->pos, &nearestCoin->oPosX);
+                        gMarioState->vel[1]  = 0;
+                    }
+                }
+            }
+        } 
 
         sink_mario_in_quicksand(gMarioState);
         squish_mario_model(gMarioState);
         set_submerged_cam_preset_and_spawn_bubbles(gMarioState);
         update_mario_health(gMarioState);
-        update_mario_info_for_cam(gMarioState);
+        update_mario_info_for_cam(gMarioState);//
         mario_update_hitbox_and_cap_model(gMarioState);
 
         // Both of the wind handling portions play wind audio only in
@@ -1838,6 +1870,7 @@ s32 execute_mario_action(UNUSED struct Object *o) {
  *                  INITIALIZATION                *
  **************************************************/
 
+// init_levelから呼ばれる
 void init_mario(void) {
     Vec3s capPos;
     struct Object *capObject;
@@ -1921,6 +1954,7 @@ void init_mario(void) {
     }
 }
 
+// ファイルセレクト後に呼ばれる
 void init_mario_from_save_file(void) {
     gMarioState->unk00 = 0;
     gMarioState->flags = 0;

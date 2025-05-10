@@ -864,7 +864,7 @@ static BhvCommandProc BehaviorCmdTable[] = {
     bhv_cmd_end_loop, //09
     bhv_cmd_break, //0A
     bhv_cmd_break_unused, //0B
-    bhv_cmd_call_native, //0C
+    bhv_cmd_call_native, //0C //!
     bhv_cmd_add_float, //0D
     bhv_cmd_set_float, //0E
     bhv_cmd_add_int, //0F
@@ -922,7 +922,7 @@ void cur_obj_update(void) {
 
     // Calculate the distance from the object to Mario.
     if (objFlags & OBJ_FLAG_COMPUTE_DIST_TO_MARIO) {
-        gCurrentObject->oDistanceToMario = dist_between_objects(gCurrentObject, gMarioObject);
+        gCurrentObject->oDistanceToMario = dist_between_objects(gCurrentObject, gMarioObject);//
         distanceFromMario = gCurrentObject->oDistanceToMario;
     } else {
         distanceFromMario = 0.0f;
@@ -930,7 +930,7 @@ void cur_obj_update(void) {
 
     // Calculate the angle from the object to Mario.
     if (objFlags & OBJ_FLAG_COMPUTE_ANGLE_TO_MARIO) {
-        gCurrentObject->oAngleToMario = obj_angle_to_object(gCurrentObject, gMarioObject);
+        gCurrentObject->oAngleToMario = obj_angle_to_object(gCurrentObject, gMarioObject);//
     }
 
     // If the object's action has changed, reset the action timer.
@@ -944,7 +944,7 @@ void cur_obj_update(void) {
 
     do {
         bhvCmdProc = BehaviorCmdTable[*gCurBhvCommand >> 24];
-        bhvProcResult = bhvCmdProc();
+        bhvProcResult = bhvCmdProc();//!
     } while (bhvProcResult == BHV_PROC_CONTINUE);
 
     gCurrentObject->curBhvCommand = gCurBhvCommand;
@@ -964,7 +964,7 @@ void cur_obj_update(void) {
     objFlags = (s16) gCurrentObject->oFlags;
 
     if (objFlags & OBJ_FLAG_SET_FACE_ANGLE_TO_MOVE_ANGLE) {
-        obj_set_face_angle_to_move_angle(gCurrentObject);
+        obj_set_face_angle_to_move_angle(gCurrentObject);//
     }
 
     if (objFlags & OBJ_FLAG_SET_FACE_YAW_TO_MOVE_YAW) {
@@ -984,11 +984,11 @@ void cur_obj_update(void) {
     }
 
     if (objFlags & OBJ_FLAG_SET_THROW_MATRIX_FROM_TRANSFORM) {
-        obj_set_throw_matrix_from_transform(gCurrentObject);
+        obj_set_throw_matrix_from_transform(gCurrentObject);//
     }
 
     if (objFlags & OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE) {
-        obj_update_gfx_pos_and_angle(gCurrentObject);
+        obj_update_gfx_pos_and_angle(gCurrentObject);//
     }
 
     // Handle visibility of object

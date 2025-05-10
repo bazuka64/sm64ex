@@ -11,7 +11,7 @@ default: all
 # by building with 'make SETTING=value'. 'make clean' may be required.
 
 # Build debug version
-DEBUG ?= 0
+DEBUG ?= 0 # ?= 初期化のみ
 # Version of the game to build
 VERSION ?= us
 # Graphics microcode used
@@ -258,7 +258,7 @@ ifneq ($(MAKECMDGOALS),distclean)
 # Make sure assets exist
 NOEXTRACT ?= 0
 ifeq ($(NOEXTRACT),0)
-DUMMY != ./extract_assets.py $(VERSION) >&2 || echo FAIL
+DUMMY != ./extract_assets.py $(VERSION) >&2 || echo FAIL # >&2:標準エラー出力
 ifeq ($(DUMMY),FAIL)
   $(error Failed to extract assets)
 endif
@@ -308,12 +308,12 @@ MIO0_DIR := $(BUILD_DIR)/bin
 SOUND_BIN_DIR := $(BUILD_DIR)/sound
 TEXTURE_DIR := textures
 ACTOR_DIR := actors
-LEVEL_DIRS := $(patsubst levels/%,%,$(dir $(wildcard levels/*/header.h)))
+LEVEL_DIRS := $(patsubst levels/%,%,$(dir $(wildcard levels/*/header.h))) # bob/ castle_ground/ etc
 
 # Directories containing source files
 
 # Hi, I'm a PC
-SRC_DIRS := src src/engine src/game src/audio src/menu src/buffers actors levels bin data assets src/pc src/pc/gfx src/pc/audio src/pc/controller src/pc/fs src/pc/fs/packtypes
+SRC_DIRS := src src/engine src/game src/audio src/menu src/buffers actors levels bin data assets src/pc src/pc/gfx src/pc/audio src/pc/controller src/pc/fs src/pc/fs/packtypes src/hack
 ASM_DIRS :=
 
 ifeq ($(DISCORDRPC),1)
@@ -572,8 +572,8 @@ ifneq ($(SDL1_USED)$(SDL2_USED),00)
 endif
 
 ifeq ($(WINDOWS_BUILD),1)
-  CC_CHECK := $(CC) -fsyntax-only -fsigned-char $(BACKEND_CFLAGS) $(INCLUDE_CFLAGS) -Wall -Wextra -Wno-format-security $(VERSION_CFLAGS) $(GRUCODE_CFLAGS)
-  CFLAGS := $(OPT_FLAGS) $(INCLUDE_CFLAGS) $(BACKEND_CFLAGS) $(VERSION_CFLAGS) $(GRUCODE_CFLAGS) -fno-strict-aliasing -fwrapv
+  CC_CHECK := $(CC) -fsyntax-only -fsigned-char $(BACKEND_CFLAGS) $(INCLUDE_CFLAGS) -Wall -Wextra -Wno-format-security $(VERSION_CFLAGS) $(GRUCODE_CFLAGS) # CC_CHECK:gcc ...
+  CFLAGS := $(OPT_FLAGS) $(INCLUDE_CFLAGS) $(BACKEND_CFLAGS) $(VERSION_CFLAGS) $(GRUCODE_CFLAGS) -fno-strict-aliasing -fwrapv # VERSION_CFLAGS:versionのdefine GRUCODE_CFLAGS:f3dex2e
 
 else ifeq ($(TARGET_WEB),1)
   CC_CHECK := $(CC) -fsyntax-only -fsigned-char $(BACKEND_CFLAGS) $(INCLUDE_CFLAGS) -Wall -Wextra -Wno-format-security $(VERSION_CFLAGS) $(GRUCODE_CFLAGS) -s USE_SDL=2
@@ -820,6 +820,7 @@ $(BUILD_DIR)/bin/segment2.o: $(BUILD_DIR)/text/$(VERSION)/define_text.inc.c
 endif
 endif
 
+# $<:右の最初 -o -:出力を標準出力 $*:us,%のこと
 $(BUILD_DIR)/text/%/define_courses.inc.c: text/define_courses.inc.c text/%/courses.h
 	$(CPP) $(VERSION_CFLAGS) $< -o - -I text/$*/ | $(TEXTCONV) charmap.txt - $@
 

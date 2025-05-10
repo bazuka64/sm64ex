@@ -166,7 +166,7 @@ s32 act_punching(struct MarioState *m) {
     mario_set_forward_vel(m, sPunchingForwardVelocities[m->actionTimer]);
     if (m->actionTimer > 0) {
         m->actionTimer--;
-    }
+    }   
 
     mario_update_punch_sequence(m);
     perform_ground_step(m);
@@ -474,3 +474,4 @@ s32 mario_execute_object_action(struct MarioState *m) {
 
     return cancel;
 }
+

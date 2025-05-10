@@ -268,18 +268,18 @@ void bhv_mario_update(void) {
     u32 particleFlags = 0;
     s32 i;
 
-    particleFlags = execute_mario_action(gCurrentObject);
+    particleFlags = execute_mario_action(gCurrentObject);//!
     gCurrentObject->oMarioParticleFlags = particleFlags;
 
     // Mario code updates MarioState's versions of position etc, so we need
     // to sync it with the Mario object
-    copy_mario_state_to_object();
+    copy_mario_state_to_object();//
 
     i = 0;
     while (sParticleTypes[i].particleFlag != 0) {
         if (particleFlags & sParticleTypes[i].particleFlag) {
             spawn_particle(sParticleTypes[i].activeParticleFlag, sParticleTypes[i].model,
-                           sParticleTypes[i].behavior);
+                           sParticleTypes[i].behavior);//
         }
 
         i++;
@@ -297,7 +297,7 @@ s32 update_objects_starting_at(struct ObjectNode *objList, struct ObjectNode *fi
         gCurrentObject = (struct Object *) firstObj;
 
         gCurrentObject->header.gfx.node.flags |= GRAPH_RENDER_HAS_ANIMATION;
-        cur_obj_update();
+        cur_obj_update();//!
 
         firstObj = firstObj->next;
         count += 1;
@@ -365,7 +365,7 @@ s32 update_objects_in_list(struct ObjectNode *objList) {
     struct ObjectNode *firstObj = objList->next;
 
     if (!(gTimeStopState & TIME_STOP_ACTIVE)) {
-        count = update_objects_starting_at(objList, firstObj);
+        count = update_objects_starting_at(objList, firstObj);//!
     } else {
         count = update_objects_during_time_stop(objList, firstObj);
     }
@@ -576,7 +576,7 @@ void update_non_terrain_objects(void) {
 
     s32 i = 2;
     while ((listIndex = sObjectListUpdateOrder[i]) != -1) {
-        gObjectCounter += update_objects_in_list(&gObjectLists[listIndex]);
+        gObjectCounter += update_objects_in_list(&gObjectLists[listIndex]);//!
         i += 1;
     }
 }
@@ -641,33 +641,33 @@ void update_objects(UNUSED s32 unused) {
 
     // If time stop is not active, unload object surfaces
     cycleCounts[1] = get_clock_difference(cycleCounts[0]);
-    clear_dynamic_surfaces();
+    clear_dynamic_surfaces();//
 
     // Update spawners and objects with surfaces
     cycleCounts[2] = get_clock_difference(cycleCounts[0]);
-    update_terrain_objects();
+    update_terrain_objects();//
 
     // If Mario was touching a moving platform at the end of last frame, apply
     // displacement now
     //! If the platform object unloaded and a different object took its place,
     //  displacement could be applied incorrectly
-    apply_mario_platform_displacement();
+    apply_mario_platform_displacement();//
 
     // Detect which objects are intersecting
     cycleCounts[3] = get_clock_difference(cycleCounts[0]);
-    detect_object_collisions();
+    detect_object_collisions();//
 
     // Update all other objects that haven't been updated yet
     cycleCounts[4] = get_clock_difference(cycleCounts[0]);
-    update_non_terrain_objects();
+    update_non_terrain_objects();//!
 
     // Unload any objects that have been deactivated
     cycleCounts[5] = get_clock_difference(cycleCounts[0]);
-    unload_deactivated_objects();
+    unload_deactivated_objects();//
 
     // Check if Mario is on a platform object and save this object
     cycleCounts[6] = get_clock_difference(cycleCounts[0]);
-    update_mario_platform();
+    update_mario_platform();//
 
     cycleCounts[7] = get_clock_difference(cycleCounts[0]);
 

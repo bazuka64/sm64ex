@@ -238,7 +238,7 @@ static void level_cmd_call(void) {
 static void level_cmd_call_loop(void) {
     typedef s32 (*Func)(s16, s32);
     Func func = CMD_GET(Func, 4);
-    sRegister = func(CMD_GET(s16, 2), sRegister);
+    sRegister = func(CMD_GET(s16, 2), sRegister);//!
 
     if (sRegister == 0) {
         sScriptStatus = SCRIPT_PAUSED;
@@ -309,6 +309,10 @@ static void level_cmd_init_level(void) {
 }
 
 static void level_cmd_clear_level(void) {
+    
+    extern void hook_from_clear_level();
+    hook_from_clear_level();
+    
     clear_objects();
     clear_area_graph_nodes();
     clear_areas();
@@ -813,7 +817,7 @@ static void (*LevelScriptJumpTable[])(void) = {
     /*0F*/ level_cmd_skip,
     /*10*/ level_cmd_skippable_nop,
     /*11*/ level_cmd_call,
-    /*12*/ level_cmd_call_loop,
+    /*12*/ level_cmd_call_loop,//!
     /*13*/ level_cmd_set_register,
     /*14*/ level_cmd_push_pool_state,
     /*15*/ level_cmd_pop_pool_state,
@@ -870,7 +874,7 @@ struct LevelCommand *level_script_execute(struct LevelCommand *cmd) {
 
     profiler_log_thread5_time(LEVEL_SCRIPT_EXECUTE);
     init_render_image();
-    render_game();
+    render_game();//
     end_master_display_list();
     alloc_display_list(0);
 

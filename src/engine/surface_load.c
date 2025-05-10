@@ -15,6 +15,8 @@
 #include "game/object_list_processor.h"
 #include "surface_load.h"
 
+#include <stdlib.h>
+
 s32 unused8038BE90;
 
 /**
@@ -379,6 +381,11 @@ static struct Surface *read_surface_data(s16 *vertexData, s16 **vertexIndices) {
 
     surface->lowerY = minY - 5;
     surface->upperY = maxY + 5;
+    
+    // 頂点インデックスの保持を追加
+    surface->vertex_indices[0] = offset1/3;
+    surface->vertex_indices[1] = offset2/3;
+    surface->vertex_indices[2] = offset3/3;
 
     return surface;
 }
@@ -750,6 +757,8 @@ void load_object_surfaces(s16 **data, s16 *vertexData) {
     }
 }
 
+
+
 /**
  * Transform an object's vertices, reload them, and render the object.
  */
@@ -794,4 +803,344 @@ void load_object_collision_model(void) {
         gCurrentObject->header.gfx.node.flags &= ~GRAPH_RENDER_ACTIVE;
     }
 #endif
+}
+
+struct Surface sDeformableSurfacePool[1000];
+int sDeformableSurfacesAllocated;
+
+static struct Surface *alloc_surface_2(void) {
+
+    //struct Surface *surface = &sSurfacePool[gSurfacesAllocated];
+    //gSurfacesAllocated++;
+    
+    //struct Surface *surface = (struct Surface *)malloc(sizeof(struct Surface));
+    struct Surface *surface = &sDeformableSurfacePool[sDeformableSurfacesAllocated];
+    sDeformableSurfacesAllocated++;
+
+    //! A bounds check! If there's more surfaces than the 2300 allowed,
+    //  we, um...
+    // Perhaps originally just debug feedback?
+    if (gSurfacesAllocated >= sSurfacePoolSize) {
+    }
+
+    surface->type = 0;
+    surface->force = 0;
+    surface->flags = 0;
+    surface->room = 0;
+    surface->object = NULL;
+
+    return surface;
+}
+
+static struct Surface *read_surface_data_2(s16 *vertexData, s16 **vertexIndices) {
+    struct Surface *surface;
+    register s32 x1, y1, z1;
+    register s32 x2, y2, z2;
+    register s32 x3, y3, z3;
+    s32 maxY, minY;
+    f32 nx, ny, nz;
+    f32 mag;
+    s16 offset1, offset2, offset3;
+
+    offset1 = 3 * (*vertexIndices)[0];
+    offset2 = 3 * (*vertexIndices)[1];
+    offset3 = 3 * (*vertexIndices)[2];
+    
+    x1 = *(vertexData + offset1 + 0);
+    y1 = *(vertexData + offset1 + 1);
+    z1 = *(vertexData + offset1 + 2);
+
+    x2 = *(vertexData + offset2 + 0);
+    y2 = *(vertexData + offset2 + 1);
+    z2 = *(vertexData + offset2 + 2);
+
+    x3 = *(vertexData + offset3 + 0);
+    y3 = *(vertexData + offset3 + 1);
+    z3 = *(vertexData + offset3 + 2);
+
+    // (v2 - v1) x (v3 - v2)
+    nx = (y2 - y1) * (z3 - z2) - (z2 - z1) * (y3 - y2);
+    ny = (z2 - z1) * (x3 - x2) - (x2 - x1) * (z3 - z2);
+    nz = (x2 - x1) * (y3 - y2) - (y2 - y1) * (x3 - x2);
+    mag = sqrtf(nx * nx + ny * ny + nz * nz);
+
+    // Could have used min_3 and max_3 for this...
+    minY = y1;
+    if (y2 < minY) {
+        minY = y2;
+    }
+    if (y3 < minY) {
+        minY = y3;
+    }
+
+    maxY = y1;
+    if (y2 > maxY) {
+        maxY = y2;
+    }
+    if (y3 > maxY) {
+        maxY = y3;
+    }
+
+    // Checking to make sure no DIV/0
+    if (mag < 0.0001) {
+        return NULL;
+    }
+    mag = (f32)(1.0 / mag);
+    nx *= mag;
+    ny *= mag;
+    nz *= mag;
+
+    surface = alloc_surface();
+
+    surface->vertex1[0] = x1;
+    surface->vertex2[0] = x2;
+    surface->vertex3[0] = x3;
+
+    surface->vertex1[1] = y1;
+    surface->vertex2[1] = y2;
+    surface->vertex3[1] = y3;
+
+    surface->vertex1[2] = z1;
+    surface->vertex2[2] = z2;
+    surface->vertex3[2] = z3;
+
+    surface->normal.x = nx;
+    surface->normal.y = ny;
+    surface->normal.z = nz;
+
+    surface->originOffset = -(nx * x1 + ny * y1 + nz * z1);
+
+    surface->lowerY = minY - 5;
+    surface->upperY = maxY + 5;
+    
+    surface->vertex_indices[0] = offset1/3;
+    surface->vertex_indices[1] = offset2/3;
+    surface->vertex_indices[2] = offset3/3;
+
+    return surface;
+}
+
+// static struct SurfaceNode *alloc_surface_node_2(void) {
+//     // struct SurfaceNode *node = &sSurfaceNodePool[gSurfaceNodesAllocated];
+//     // gSurfaceNodesAllocated++;
+    
+//     struct SurfaceNode *node = (struct SurfaceNode *)malloc(sizeof(struct SurfaceNode));
+
+//     node->next = NULL;
+
+//     //! A bounds check! If there's more surface nodes than 7000 allowed,
+//     //  we, um...
+//     // Perhaps originally just debug feedback?
+//     if (gSurfaceNodesAllocated >= 7000) {
+//     }
+
+//     return node;
+// }
+
+// static void add_surface_to_cell_2(s16 dynamic, s16 cellX, s16 cellZ, struct Surface *surface) {
+//     struct SurfaceNode *newNode = alloc_surface_node_2();
+//     struct SurfaceNode *list;
+//     s16 surfacePriority;
+//     s16 priority;
+//     s16 sortDir;
+//     s16 listIndex;
+
+//     if (surface->normal.y > 0.01) {
+//         listIndex = SPATIAL_PARTITION_FLOORS;
+//         sortDir = 1; // highest to lowest, then insertion order
+//     } else if (surface->normal.y < -0.01) {
+//         listIndex = SPATIAL_PARTITION_CEILS;
+//         sortDir = -1; // lowest to highest, then insertion order
+//     } else {
+//         listIndex = SPATIAL_PARTITION_WALLS;
+//         sortDir = 0; // insertion order
+
+//         if (surface->normal.x < -0.707 || surface->normal.x > 0.707) {
+//             surface->flags |= SURFACE_FLAG_X_PROJECTION;
+//         }
+//     }
+
+//     //! (Surface Cucking) Surfaces are sorted by the height of their first
+//     //  vertex. Since vertices aren't ordered by height, this causes many
+//     //  lower triangles to be sorted higher. This worsens surface cucking since
+//     //  many functions only use the first triangle in surface order that fits,
+//     //  missing higher surfaces.
+//     //  upperY would be a better sort method.
+//     surfacePriority = surface->vertex1[1] * sortDir;
+
+//     newNode->surface = surface;
+
+//     if (dynamic) {
+//         list = &gDynamicSurfacePartition[cellZ][cellX][listIndex];
+//     } else {
+//         list = &gStaticSurfacePartition[cellZ][cellX][listIndex];
+//     }
+
+//     // Loop until we find the appropriate place for the surface in the list.
+//     while (list->next != NULL) {
+//         priority = list->next->surface->vertex1[1] * sortDir;
+
+//         if (surfacePriority > priority) {
+//             break;
+//         }
+
+//         list = list->next;
+//     }
+
+//     newNode->next = list->next;
+//     list->next = newNode;
+// }
+
+// static void add_surface_2(struct Surface *surface, s32 dynamic) {
+//     // minY/maxY maybe? s32 instead of s16, though.
+//     UNUSED s32 unused1, unused2;
+//     s16 minX, minZ, maxX, maxZ;
+
+//     s16 minCellX, minCellZ, maxCellX, maxCellZ;
+
+//     s16 cellZ, cellX;
+//     // cellY maybe? s32 instead of s16, though.
+//     UNUSED s32 unused3 = 0;
+
+//     minX = min_3(surface->vertex1[0], surface->vertex2[0], surface->vertex3[0]);
+//     minZ = min_3(surface->vertex1[2], surface->vertex2[2], surface->vertex3[2]);
+//     maxX = max_3(surface->vertex1[0], surface->vertex2[0], surface->vertex3[0]);
+//     maxZ = max_3(surface->vertex1[2], surface->vertex2[2], surface->vertex3[2]);
+
+//     minCellX = lower_cell_index(minX);
+//     maxCellX = upper_cell_index(maxX);
+//     minCellZ = lower_cell_index(minZ);
+//     maxCellZ = upper_cell_index(maxZ);
+
+//     for (cellZ = minCellZ; cellZ <= maxCellZ; cellZ++) {
+//         for (cellX = minCellX; cellX <= maxCellX; cellX++) {
+//             add_surface_to_cell_2(dynamic, cellX, cellZ, surface);
+//         }
+//     }
+// }
+
+void load_object_surfaces_2(s16 **data, s16 *vertexData) {
+    s32 surfaceType;
+    s32 i;
+    s32 numSurfaces;
+    s16 hasForce;
+    s16 flags;
+    s16 room;
+
+    surfaceType = *(*data);
+    (*data)++;
+
+    numSurfaces = *(*data);
+    (*data)++;
+
+    hasForce = surface_has_force(surfaceType);
+
+    flags = surf_has_no_cam_collision(surfaceType);
+    flags |= SURFACE_FLAG_DYNAMIC;
+
+    // The DDD warp is initially loaded at the origin and moved to the proper
+    // position in paintings.c and doesn't update its room, so set it here.
+    if (gCurrentObject->behavior == segmented_to_virtual(bhvDddWarp)) {
+        room = 5;
+    } else {
+        room = 0;
+    }
+
+    for (i = 0; i < numSurfaces; i++) {
+        struct Surface *surface = read_surface_data_2(vertexData, data);
+
+        // if (surface != NULL) {
+        //     surface->object = gCurrentObject;
+        //     surface->type = surfaceType;
+
+        //     if (hasForce) {
+        //         surface->force = *(*data + 3);
+        //     } else {
+        //         surface->force = 0;
+        //     }
+
+        //     surface->flags |= flags;
+        //     surface->room = (s8) room;
+        //     add_surface(surface, TRUE);
+        // }
+
+        if (hasForce) {
+            *data += 4;
+        } else {
+            *data += 3;
+        }
+    }
+}
+
+void load_object_collision_model_2_init(void){
+    s16 vertexData[600];
+
+    s16 *collisionData = gCurrentObject->collisionData;
+
+    collisionData++;
+    transform_object_vertices(&collisionData, vertexData);
+
+    while (*collisionData != TERRAIN_LOAD_CONTINUE) {
+        load_object_surfaces_2(&collisionData, vertexData);
+    }
+}
+
+void load_object_collision_model_2_update(void) {
+    
+    for (int i = 0; i < sDeformableSurfacesAllocated; i++)
+    {
+        struct Surface *surface = &sDeformableSurfacePool[i];
+        
+        s32 surfaceType;
+        s32 i;
+        s32 numSurfaces;
+        s16 hasForce;
+        s16 flags;
+        s16 room;
+    
+        // surfaceType = *(*data);
+        // (*data)++;
+    
+        // numSurfaces = *(*data);
+        // (*data)++;
+    
+        //hasForce = surface_has_force(surfaceType);
+        hasForce = surface->force;
+    
+        //flags = surf_has_no_cam_collision(surfaceType);
+        flags = surface->flags;
+        flags |= SURFACE_FLAG_DYNAMIC;
+    
+        // The DDD warp is initially loaded at the origin and moved to the proper
+        // position in paintings.c and doesn't update its room, so set it here.
+        if (gCurrentObject->behavior == segmented_to_virtual(bhvDddWarp)) {
+            room = 5;
+        } else {
+            room = 0;
+        }
+        
+        if (surface != NULL) {
+            surface->object = gCurrentObject;
+            surface->type = surfaceType;
+    
+            // if (hasForce) {
+            //     surface->force = *(*data + 3);
+            // } else {
+                surface->force = 0;
+            //}
+    
+            surface->flags |= flags;
+            surface->room = (s8) room;
+            add_surface(surface, TRUE);
+        }
+    
+        // if (hasForce) {
+        //     *data += 4;
+        // } else {
+        //     *data += 3;
+        // }
+    }
+    
+    
+
 }

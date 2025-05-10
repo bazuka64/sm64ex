@@ -1,0 +1,6 @@
+extern Lights1 napalm_f3dlite_material_003_v5_lights;
+extern u8 napalm_Image_0_32_rgba16[];
+extern Vtx napalm_tripo_node_b7e3e46b_6c7c_4a26_a182_ac2b9f9ac7b2_mesh_vtx_0[3167];
+extern Gfx napalm_tripo_node_b7e3e46b_6c7c_4a26_a182_ac2b9f9ac7b2_mesh_tri_0[];
+extern Gfx mat_napalm_f3dlite_material_003_v5[];
+extern Gfx napalm_tripo_node_b7e3e46b_6c7c_4a26_a182_ac2b9f9ac7b2_mesh[];

@@ -1,0 +1,24 @@
+・使用エフェクト
+　　ray-mmd 1.5.2
+　　M4Layer
+　　HgSAO
+　　o_LikeHDR
+
+・詳細設定
+　ray-mmd1.5.2 _ mainタブにmain_ex_with_sphmap
+                 MaterialMapに拙作の配布materialを適用
+                 Time of dayおよびray_controllerに同梱のvmdファイル適用
+
+　M4Layer _ 乗算モードでTr:0.3～0.6
+
+　HgSAO _ X:-25, Y:30, Z:0.05
+　　　　　Rx:0.3, Ry:0.0, Rz:1.5
+　　　　　Si:0.285, Tr0.5
+
+　o_LikeHDR _ Si:1.0, Tr:0.3, 他は0
+
+これらは同梱画像を出力した際の設定です。
+各エフェクトの設定や組み合わせによって質感は異なります。
+
+       
+       

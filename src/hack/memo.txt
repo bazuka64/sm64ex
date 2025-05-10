@@ -1,0 +1,23 @@
+main{
+    init
+    while{
+        handle events
+        input
+        
+        cylinder collision
+        obj update{
+            mario update{
+                interaction
+                action
+            }
+            list beh update
+        }
+        
+        camera update
+        
+        render
+        rumble
+        audio update
+        fps wait
+    }
+}

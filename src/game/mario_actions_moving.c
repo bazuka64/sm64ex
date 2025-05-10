@@ -841,7 +841,7 @@ s32 act_walking(struct MarioState *m) {
             break;
 
         case GROUND_STEP_HIT_WALL:
-            push_or_sidle_wall(m, startPos);
+            push_or_sidle_wall(m, startPos);//走りモーションになるかどうか
             m->actionTimer = 0;
             break;
     }
@@ -1227,7 +1227,9 @@ s32 act_riding_shell_ground(struct MarioState *m) {
     }
 
     update_shell_speed(m);
-    set_mario_animation(m, m->actionArg == 0 ? MARIO_ANIM_START_RIDING_SHELL : MARIO_ANIM_RIDING_SHELL);
+    
+    // set_mario_animation(m, m->actionArg == 0 ? MARIO_ANIM_START_RIDING_SHELL : MARIO_ANIM_RIDING_SHELL);
+    set_mario_animation(m, MARIO_ANIM_SLEEP_LYING);
 
     switch (perform_ground_step(m)) {
         case GROUND_STEP_LEFT_GROUND:
@@ -1235,11 +1237,13 @@ s32 act_riding_shell_ground(struct MarioState *m) {
             break;
 
         case GROUND_STEP_HIT_WALL:
-            mario_stop_riding_object(m);
+            //mario_stop_riding_object(m);
             play_sound(m->flags & MARIO_METAL_CAP ? SOUND_ACTION_METAL_BONK : SOUND_ACTION_BONK,
                        m->marioObj->header.gfx.cameraToObject);
             m->particleFlags |= PARTICLE_VERTICAL_STAR;
-            set_mario_action(m, ACT_BACKWARD_GROUND_KB, 0);
+            //set_mario_action(m, ACT_BACKWARD_GROUND_KB, 0);
+            
+            mario_bonk_reflection(m, FALSE);
             break;
     }
 
@@ -1328,11 +1332,12 @@ s32 act_burning_ground(struct MarioState *m) {
     if (m->forwardVel < 8.0f) {
         m->forwardVel = 8.0f;
     }
-    if (m->forwardVel > 48.0f) {
-        m->forwardVel = 48.0f;
-    }
+    // if (m->forwardVel > 48.0f) {
+    //     m->forwardVel = 48.0f;
+    // }
 
-    m->forwardVel = approach_f32(m->forwardVel, 32.0f, 4.0f, 1.0f);
+    //m->forwardVel = approach_f32(m->forwardVel, 32.0f, 4.0f, 1.0f);
+    m->forwardVel = approach_f32(m->forwardVel, 2*32.0f, 4.0f, 1.0f);
 
     if (m->input & INPUT_NONZERO_ANALOG) {
         m->faceAngle[1] =
@@ -2006,11 +2011,11 @@ s32 mario_execute_moving_action(struct MarioState *m) {
         case ACT_MOVE_PUNCHING:            cancel = act_move_punching(m);            break;
         case ACT_CROUCH_SLIDE:             cancel = act_crouch_slide(m);             break;
         case ACT_SLIDE_KICK_SLIDE:         cancel = act_slide_kick_slide(m);         break;
-        case ACT_HARD_BACKWARD_GROUND_KB:  cancel = act_hard_backward_ground_kb(m);  break;
+        case ACT_HARD_BACKWARD_GROUND_KB:  cancel = act_hard_backward_ground_kb(m);  break;//bitdwで死んだ時
         case ACT_HARD_FORWARD_GROUND_KB:   cancel = act_hard_forward_ground_kb(m);   break;
         case ACT_BACKWARD_GROUND_KB:       cancel = act_backward_ground_kb(m);       break;
         case ACT_FORWARD_GROUND_KB:        cancel = act_forward_ground_kb(m);        break;
-        case ACT_SOFT_BACKWARD_GROUND_KB:  cancel = act_soft_backward_ground_kb(m);  break;
+        case ACT_SOFT_BACKWARD_GROUND_KB:  cancel = act_soft_backward_ground_kb(m);  break;//クリボーとあったった時
         case ACT_SOFT_FORWARD_GROUND_KB:   cancel = act_soft_forward_ground_kb(m);   break;
         case ACT_GROUND_BONK:              cancel = act_ground_bonk(m);              break;
         case ACT_DEATH_EXIT_LAND:          cancel = act_death_exit_land(m);          break;
